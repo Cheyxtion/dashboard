@@ -2,13 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctInput = document.getElementById('ct-input');
     const idrInput = document.getElementById('idr-input');
     
-    // Nilai Tukar Tetap: 3289 CT = 1000 IDR
-    // Berarti 1 CT = 1000 / 3289 = 0,304043... IDR
     const CT_BASE = 3289;
     const IDR_BASE = 1000;
 
     function convertCtToIdr() {
-        const ctValue = parseFloat(ctInput.value);
+        let val = ctInput.value.replace(',', '.');
+        const ctValue = parseFloat(val);
+
         if (isNaN(ctValue) || ctValue <= 0) {
             idrInput.value = '';
             return;
@@ -16,35 +16,27 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const idrResult = (ctValue / CT_BASE) * IDR_BASE;
         
-        // Agar muncul desimal yang sangat kecil, kita set desimalnya sampai 4 angka
-        // Contoh: 1 CT akan muncul 0.3041
-        // Jika angka bulat, tetap akan tampil bersih
-        idrInput.value = idrResult.toLocaleString('en-US', { 
-            useGrouping: false, 
-            maximumFractionDigits: 4 
-        });
+        // Pakai toFixed(5) supaya 1 CT = 0.30404 muncul!
+        // Lalu hapus nol mubazir di paling belakang
+        idrInput.value = parseFloat(idrResult.toFixed(5)).toString().replace('.', ',');
     }
 
     function convertIdrToCt() {
-        const idrValue = parseFloat(idrInput.value);
+        let val = idrInput.value.replace(',', '.');
+        const idrValue = parseFloat(val);
+
         if (isNaN(idrValue) || idrValue <= 0) {
             ctInput.value = '';
             return;
         }
 
         const ctResult = (idrValue / IDR_BASE) * CT_BASE;
-
-        // Sama halnya dengan CT, kita beri presisi tinggi
-        ctInput.value = ctResult.toLocaleString('en-US', { 
-            useGrouping: false, 
-            maximumFractionDigits: 4 
-        });
+        ctInput.value = parseFloat(ctResult.toFixed(5)).toString().replace('.', ',');
     }
 
-    // Event Listeners
     ctInput.addEventListener('input', convertCtToIdr);
     idrInput.addEventListener('input', convertIdrToCt);
 
-    // Inisialisasi awal
+    // Jalankan awal
     convertCtToIdr();
 });
