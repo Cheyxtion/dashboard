@@ -6,19 +6,22 @@
     <title>Kurs CT ke IDR | CheyKurs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        :root { --bs-primary: #5865F2; }
+        .btn-primary { background-color: var(--bs-primary); border: none; }
+        .text-primary { color: var(--bs-primary) !important; }
+        .min-vh-75 { min-height: 75vh; }
+        input::placeholder { font-size: 0.9rem; opacity: 0.5; }
+    </style>
 </head>
 <body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg navbar-white bg-white shadow-sm sticky-top">
+    <nav class="navbar navbar-white bg-white shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold text-dark" href="#">Chey<span class="text-primary">Kurs</span></a>
-            <div class="ms-auto d-flex align-items-center">
-                <a class="nav-link me-3 d-none d-sm-block" href="#">Home</a>
-                <a href="https://discord.gg/link-kamu" target="_blank" class="btn btn-primary btn-sm px-3">
-                    <i class="fab fa-discord me-2"></i> Discord
-                </a>
-            </div>
+            <a href="https://discord.gg/link-kamu" target="_blank" class="btn btn-primary btn-sm px-3">
+                <i class="fab fa-discord me-1"></i> Discord
+            </a>
         </div>
     </nav>
 
@@ -28,14 +31,14 @@
                 <div class="card shadow border-0 p-4 rounded-4 bg-white">
                     <div class="text-center mb-4">
                         <h1 class="fw-bold h4 mb-1">Konverter CT</h1>
-                        <p class="text-muted small">Presisi tinggi untuk nilai tukar pasar.</p>
+                        <p class="text-muted small">Presisi Format: 1.000,00</p>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-secondary">Jumlah CT</label>
                         <div class="input-group">
                             <span class="input-group-text bg-white text-muted">CT</span>
-                            <input type="text" id="ct-input" class="form-control form-control-lg" placeholder="0" value="1">
+                            <input type="text" id="ct-input" class="form-control form-control-lg" placeholder="Masukkan angka...">
                         </div>
                     </div>
 
@@ -45,7 +48,7 @@
                         <label class="form-label small fw-bold text-secondary">Estimasi Rupiah (IDR)</label>
                         <div class="input-group">
                             <span class="input-group-text bg-white text-muted">Rp</span>
-                            <input type="text" id="idr-input" class="form-control form-control-lg" placeholder="0">
+                            <input type="text" id="idr-input" class="form-control form-control-lg" placeholder="Hasil...">
                         </div>
                     </div>
 
@@ -53,8 +56,8 @@
                         <div class="d-flex align-items-center">
                             <i class="fas fa-info-circle me-3 text-info"></i>
                             <p class="mb-0 small text-info-emphasis">
-                                <strong>3.289 CT = Rp 1.000</strong><br>
-                                <span class="opacity-75" style="font-size: 10px;">*Box ini statis sebagai patokan kurs.</span>
+                                <strong>3.289 CT = Rp 1.000,00</strong><br>
+                                <span class="opacity-75" style="font-size: 10px;">*Patokan kurs tetap pasar hari ini.</span>
                             </p>
                         </div>
                     </div>
@@ -63,7 +66,37 @@
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctInput = document.getElementById('ct-input');
+            const idrInput = document.getElementById('idr-input');
+            const CT_BASE = 3289;
+            const IDR_BASE = 1000;
+
+            function formatIndo(angka) {
+                return angka.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+            function cleanInput(val) {
+                return parseFloat(val.replace(/\./g, '').replace(',', '.'));
+            }
+
+            ctInput.addEventListener('input', () => {
+                const ctValue = cleanInput(ctInput.value);
+                if (isNaN(ctValue)) { idrInput.value = ''; return; }
+                idrInput.value = formatIndo((ctValue / CT_BASE) * IDR_BASE);
+            });
+
+            idrInput.addEventListener('input', () => {
+                const idrValue = cleanInput(idrInput.value);
+                if (isNaN(idrValue)) { ctInput.value = ''; return; }
+                ctInput.value = formatIndo((idrValue / IDR_BASE) * CT_BASE);
+            });
+
+            // Set awal: 1 CT
+            ctInput.value = "1,00";
+            idrInput.value = formatIndo(1000 / 3289);
+        });
+    </script>
 </body>
 </html>
