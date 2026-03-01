@@ -7,26 +7,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const CT_BASE = 3289;
     const IDR_BASE = 1000;
 
-    // Fungsi konversi CT ke IDR
     function convertCtToIdr() {
         const ctValue = parseFloat(ctInput.value);
-        if (isNaN(ctValue) || ctValue < 0) {
+        if (isNaN(ctValue) || ctValue <= 0) {
             idrInput.value = '';
             updateStatus(0, 0);
             return;
         }
         
+        // Rumus: (Jumlah CT / 3289) * 1000
         const idrResult = (ctValue / CT_BASE) * IDR_BASE;
         
-        // Update input IDR (bulatkan 2 desimal)
-        idrInput.value = idrResult.toFixed(0); 
+        // .toFixed(2) artinya nampilin 2 angka di belakang koma (misal: 0.30)
+        // Kalau hasilnya di atas 100, kita buletin aja biar nggak ribet bacanya
+        idrInput.value = idrResult < 100 ? idrResult.toFixed(2) : Math.round(idrResult);
+        
         updateStatus(ctValue, idrResult);
     }
 
-    // Fungsi konversi IDR ke CT
     function convertIdrToCt() {
         const idrValue = parseFloat(idrInput.value);
-        if (isNaN(idrValue) || idrValue < 0) {
+        if (isNaN(idrValue) || idrValue <= 0) {
             ctInput.value = '';
             updateStatus(0, 0);
             return;
@@ -34,27 +35,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const ctResult = (idrValue / IDR_BASE) * CT_BASE;
 
-        // Update input CT (bulatkan ke angka utuh)
-        ctInput.value = Math.round(ctResult);
+        // CT biasanya angka bulat, tapi kita kasih 1 desimal kalau jumlahnya kecil
+        ctInput.value = ctResult < 10 ? ctResult.toFixed(1) : Math.round(ctResult);
+        
         updateStatus(ctResult, idrValue);
     }
 
-    // Fungsi untuk mengupdate teks status di bawah
     function updateStatus(ct, idr) {
-        if (ct === 0 && idr === 0) {
+        if (!ct || !idr) {
             statusText.innerText = `Masukkan jumlah untuk menghitung`;
             return;
         }
-        // Format angka agar mudah dibaca (ribuan)
-        const formattedCT = Math.round(ct).toLocaleString('id-ID');
-        const formattedIDR = Math.round(idr).toLocaleString('id-ID');
+
+        // Format tampilan teks di bawah kotak input
+        // Menggunakan 'de-DE' supaya pemisah ribuan pakai titik (.) dan desimal pakai koma (,) khas Indonesia
+        const formattedCT = ct.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        const formattedIDR = idr.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        
         statusText.innerText = `${formattedCT} CT = Rp ${formattedIDR}`;
     }
 
-    // Event Listeners: Input 2 arah
     ctInput.addEventListener('input', convertCtToIdr);
     idrInput.addEventListener('input', convertIdrToCt);
 
-    // Jalankan konversi awal (CT ke IDR) saat halaman dimuat
+    // Jalankan kalkulasi awal
     convertCtToIdr();
 });
