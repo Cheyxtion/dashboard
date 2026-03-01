@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const ctInput = document.getElementById('ct-input');
     const idrInput = document.getElementById('idr-input');
-    const statusText = document.getElementById('status-text');
-
-    // Nilai Tukar: 3289 CT = 1000 IDR
+    // Kita tidak perlu lagi memanipulasi statusText secara dinamis agar tetap statis
+    
+    // Nilai Tukar Tetap: 3289 CT = 1000 IDR
     const CT_BASE = 3289;
     const IDR_BASE = 1000;
 
@@ -11,53 +11,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctValue = parseFloat(ctInput.value);
         if (isNaN(ctValue) || ctValue <= 0) {
             idrInput.value = '';
-            updateStatus(0, 0);
             return;
         }
         
         // Rumus: (Jumlah CT / 3289) * 1000
         const idrResult = (ctValue / CT_BASE) * IDR_BASE;
         
-        // .toFixed(2) artinya nampilin 2 angka di belakang koma (misal: 0.30)
-        // Kalau hasilnya di atas 100, kita buletin aja biar nggak ribet bacanya
+        // Jika hasil di bawah 100, tampilkan 2 desimal (biar 1 CT muncul 0,30)
+        // Jika di atas 100, bulatkan saja agar bersih
         idrInput.value = idrResult < 100 ? idrResult.toFixed(2) : Math.round(idrResult);
-        
-        updateStatus(ctValue, idrResult);
     }
 
     function convertIdrToCt() {
         const idrValue = parseFloat(idrInput.value);
         if (isNaN(idrValue) || idrValue <= 0) {
             ctInput.value = '';
-            updateStatus(0, 0);
             return;
         }
 
         const ctResult = (idrValue / IDR_BASE) * CT_BASE;
 
-        // CT biasanya angka bulat, tapi kita kasih 1 desimal kalau jumlahnya kecil
+        // Jika CT kecil, tampilkan 1 desimal, jika besar bulatkan
         ctInput.value = ctResult < 10 ? ctResult.toFixed(1) : Math.round(ctResult);
-        
-        updateStatus(ctResult, idrValue);
     }
 
-    function updateStatus(ct, idr) {
-        if (!ct || !idr) {
-            statusText.innerText = `Masukkan jumlah untuk menghitung`;
-            return;
-        }
-
-        // Format tampilan teks di bawah kotak input
-        // Menggunakan 'de-DE' supaya pemisah ribuan pakai titik (.) dan desimal pakai koma (,) khas Indonesia
-        const formattedCT = ct.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-        const formattedIDR = idr.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-        
-        statusText.innerText = `${formattedCT} CT = Rp ${formattedIDR}`;
-    }
-
+    // Event Listeners untuk input dua arah
     ctInput.addEventListener('input', convertCtToIdr);
     idrInput.addEventListener('input', convertIdrToCt);
 
-    // Jalankan kalkulasi awal
+    // Jalankan kalkulasi awal supaya pas buka web langsung ada angkanya
     convertCtToIdr();
 });
