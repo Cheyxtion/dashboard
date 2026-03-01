@@ -3,40 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page Saya | GitHub Pages</title>
+    <title>Konverter CT ke IDR | Cheykursxtion</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
     <nav>
-        <div class="logo">MyBrand</div>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#features">Fitur</a></li>
-            <li><a href="#" class="btn-nav">Mulai</a></li>
-        </ul>
+        <div class="container nav-wrapper">
+            <div class="logo">Chey<span>Kurs</span></div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="https://discord.gg/link-kamu" target="_blank" class="btn-discord"><i class="fab fa-discord"></i> Discord</a></li>
+            </ul>
+        </div>
     </nav>
 
     <header class="hero">
-        <div class="hero-content">
-            <h1>Bangun Masa Depan Digital Anda</h1>
-            <p>Solusi cepat, gratis, dan mudah untuk hosting landing page langsung dari GitHub.</p>
-            <button id="cta-button">Coba Sekarang</button>
+        <div class="container">
+            <div class="converter-box">
+                <h1>Kurs Mata Uang CT</h1>
+                <p>Konversi instan dari nilai CT ke Rupiah (IDR)</p>
+                
+                <div class="input-group">
+                    <label>Jumlah CT</label>
+                    <input type="number" id="ct-input" placeholder="Masukkan jumlah CT..." value="1">
+                </div>
+
+                <div class="swap-icon">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+
+                <div class="input-group">
+                    <label>Estimasi IDR</label>
+                    <div class="result-display">
+                        <span class="currency-symbol">Rp</span>
+                        <span id="idr-result">0</span>
+                    </div>
+                </div>
+
+                <p class="update-text">*Harga berdasarkan update terakhir pasar.</p>
+            </div>
         </div>
     </header>
-
-    <section id="features" class="features">
-        <div class="card">
-            <h3>Gratis Selamanya</h3>
-            <p>Hosting di GitHub Pages tidak dipungut biaya sepeser pun.</p>
-        </div>
-        <div class="card">
-            <h3>Cepat & Aman</h3>
-            <p>Menggunakan infrastruktur global GitHub yang super stabil.</p>
-        </div>
-    </section>
 
     <script src="script.js"></script>
 </body>
 </html>
-
