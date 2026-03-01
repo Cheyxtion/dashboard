@@ -5,9 +5,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const CT_BASE = 3289;
     const IDR_BASE = 1000;
 
+    // Fungsi untuk memformat angka ke gaya Indonesia (1.000,00)
+    function formatIndo(angka) {
+        return angka.toLocaleString('id-ID', { 
+            minimumFractionDigits: 2, 
+            maximumFractionDigits: 2 
+        });
+    }
+
+    // Fungsi untuk membersihkan input agar bisa dihitung (hapus titik, ubah koma ke titik)
+    function cleanInput(val) {
+        return parseFloat(val.replace(/\./g, '').replace(',', '.'));
+    }
+
     function convertCtToIdr() {
-        let val = ctInput.value.replace(',', '.');
-        const ctValue = parseFloat(val);
+        const ctValue = cleanInput(ctInput.value);
 
         if (isNaN(ctValue) || ctValue <= 0) {
             idrInput.value = '';
@@ -15,15 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const idrResult = (ctValue / CT_BASE) * IDR_BASE;
-        
-        // Pakai toFixed(5) supaya 1 CT = 0.30404 muncul!
-        // Lalu hapus nol mubazir di paling belakang
-        idrInput.value = parseFloat(idrResult.toFixed(5)).toString().replace('.', ',');
+        idrInput.value = formatIndo(idrResult);
     }
 
     function convertIdrToCt() {
-        let val = idrInput.value.replace(',', '.');
-        const idrValue = parseFloat(val);
+        const idrValue = cleanInput(idrInput.value);
 
         if (isNaN(idrValue) || idrValue <= 0) {
             ctInput.value = '';
@@ -31,12 +39,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const ctResult = (idrValue / IDR_BASE) * CT_BASE;
-        ctInput.value = parseFloat(ctResult.toFixed(5)).toString().replace('.', ',');
+        ctInput.value = formatIndo(ctResult);
     }
 
+    // Event blur: Format otomatis pas user selesai ngetik (pindah fokus)
+    ctInput.addEventListener('blur', () => {
+        const val = cleanInput(ctInput.value);
+        if(!isNaN(val)) ctInput.value = formatIndo(val);
+    });
+
+    idrInput.addEventListener('blur', () => {
+        const val = cleanInput(idrInput.value);
+        if(!isNaN(val)) idrInput.value = formatIndo(val);
+    });
+
+    // Event input: Update hasil secara real-time
     ctInput.addEventListener('input', convertCtToIdr);
     idrInput.addEventListener('input', convertIdrToCt);
 
-    // Jalankan awal
+    // Inisialisasi awal (Contoh: 1.000,00 CT)
+    ctInput.value = formatIndo(1);
     convertCtToIdr();
 });
