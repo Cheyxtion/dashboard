@@ -13,70 +13,53 @@
     <nav class="navbar navbar-expand-lg navbar-white bg-white shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold text-dark" href="#">Chey<span class="text-primary">Kurs</span></a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
-                    </li>
-                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                        <a href="https://discord.gg/link-kamu" target="_blank" class="btn btn-primary d-flex align-items-center justify-content-center">
-                            <i class="fab fa-discord me-2"></i> Discord
-                        </a>
-                    </li>
-                </ul>
+            <div class="ms-auto d-flex align-items-center">
+                <a class="nav-link me-3 d-none d-sm-block" href="#">Home</a>
+                <a href="https://discord.gg/link-kamu" target="_blank" class="btn btn-primary btn-sm px-3">
+                    <i class="fab fa-discord me-2"></i> Discord
+                </a>
             </div>
         </div>
     </nav>
 
     <main class="container my-5">
-        <div class="row justify-content-center align-items-center min-vh-75 py-5">
-            <div class="col-md-8 col-lg-6">
-                
-                <div class="card shadow border-0 p-4 p-md-5 rounded-4 bg-white">
+        <div class="row justify-content-center align-items-center min-vh-75 py-2">
+            <div class="col-md-8 col-lg-5">
+                <div class="card shadow border-0 p-4 rounded-4 bg-white">
                     <div class="text-center mb-4">
-                        <h1 class="fw-bold h2 mb-2">Konverter Mata Uang</h1>
-                        <p class="text-muted">Nilai tukar akurat dari CT ke Rupiah (IDR) dan sebaliknya.</p>
-                        <span class="badge bg-secondary-subtle text-secondary rounded-pill p-2 px-3 fw-normal">
-                            Kurs: 3.289 CT = Rp 1.000
-                        </span>
+                        <h1 class="fw-bold h4 mb-1">Konverter CT</h1>
+                        <p class="text-muted small">Presisi tinggi untuk nilai tukar pasar.</p>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="ct-input" class="form-label fw-semibold text-secondary">Jumlah CT</label>
-                        <div class="input-group input-group-lg">
-                            <span class="input-group-text bg-white border-end-0 text-muted fs-6">CT</span>
-                            <input type="number" id="ct-input" class="form-control border-start-0 ps-1" placeholder="Masukkan CT..." value="3289">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-secondary">Jumlah CT</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white text-muted">CT</span>
+                            <input type="text" id="ct-input" class="form-control form-control-lg" placeholder="0" value="1">
                         </div>
                     </div>
 
-                    <div class="text-center my-3 text-muted">
-                        <i class="fas fa-arrow-down fa-lg"></i>
-                    </div>
+                    <div class="text-center my-2 text-muted"><i class="fas fa-arrow-down"></i></div>
 
                     <div class="mb-4">
-                        <label for="idr-input" class="form-label fw-semibold text-secondary">Estimasi Rupiah (IDR)</label>
-                        <div class="input-group input-group-lg">
-                            <span class="input-group-text bg-white border-end-0 text-muted fs-6">Rp</span>
-                            <input type="number" id="idr-input" class="form-control border-start-0 ps-1" placeholder="Hasil IDR...">
+                        <label class="form-label small fw-bold text-secondary">Estimasi Rupiah (IDR)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white text-muted">Rp</span>
+                            <input type="text" id="idr-input" class="form-control form-control-lg" placeholder="0">
                         </div>
                     </div>
 
-                    <div class="alert alert-info border-0 rounded-3 p-3 mt-2" role="alert">
-                      <div class="d-flex align-items-center">
-                        <i class="fas fa-info-circle me-3 fa-lg text-info"></i>
-                        <p class="mb-0 small text-info-emphasis">
-                            <strong id="status-text">3.289 CT = Rp 1.000</strong><br>
-                            <span class="text-muted opacity-75">*Harga berdasarkan update terakhir pasar.</span>
-                        </p>
-                      </div>
+                    <div class="alert alert-info border-0 rounded-3 p-3 mb-0">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-info-circle me-3 text-info"></i>
+                            <p class="mb-0 small text-info-emphasis">
+                                <strong>3.289 CT = Rp 1.000</strong><br>
+                                <span class="opacity-75" style="font-size: 10px;">*Box ini statis sebagai patokan kurs.</span>
+                            </p>
+                        </div>
                     </div>
-
-                </div> </div>
+                </div> 
+            </div>
         </div>
     </main>
 
