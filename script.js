@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const ctInput = document.getElementById('ct-input');
     const idrInput = document.getElementById('idr-input');
-    // Kita tidak perlu lagi memanipulasi statusText secara dinamis agar tetap statis
     
     // Nilai Tukar Tetap: 3289 CT = 1000 IDR
+    // Berarti 1 CT = 1000 / 3289 = 0,304043... IDR
     const CT_BASE = 3289;
     const IDR_BASE = 1000;
 
@@ -14,12 +14,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // Rumus: (Jumlah CT / 3289) * 1000
         const idrResult = (ctValue / CT_BASE) * IDR_BASE;
         
-        // Jika hasil di bawah 100, tampilkan 2 desimal (biar 1 CT muncul 0,30)
-        // Jika di atas 100, bulatkan saja agar bersih
-        idrInput.value = idrResult < 100 ? idrResult.toFixed(2) : Math.round(idrResult);
+        // Agar muncul desimal yang sangat kecil, kita set desimalnya sampai 4 angka
+        // Contoh: 1 CT akan muncul 0.3041
+        // Jika angka bulat, tetap akan tampil bersih
+        idrInput.value = idrResult.toLocaleString('en-US', { 
+            useGrouping: false, 
+            maximumFractionDigits: 4 
+        });
     }
 
     function convertIdrToCt() {
@@ -31,14 +34,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const ctResult = (idrValue / IDR_BASE) * CT_BASE;
 
-        // Jika CT kecil, tampilkan 1 desimal, jika besar bulatkan
-        ctInput.value = ctResult < 10 ? ctResult.toFixed(1) : Math.round(ctResult);
+        // Sama halnya dengan CT, kita beri presisi tinggi
+        ctInput.value = ctResult.toLocaleString('en-US', { 
+            useGrouping: false, 
+            maximumFractionDigits: 4 
+        });
     }
 
-    // Event Listeners untuk input dua arah
+    // Event Listeners
     ctInput.addEventListener('input', convertCtToIdr);
     idrInput.addEventListener('input', convertIdrToCt);
 
-    // Jalankan kalkulasi awal supaya pas buka web langsung ada angkanya
+    // Inisialisasi awal
     convertCtToIdr();
 });
