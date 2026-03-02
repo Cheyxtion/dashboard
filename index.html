@@ -3,40 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cheyxtion Property</title>
-    <link rel="icon" type="image/png" href="images/currency-exchange.png">
+    <title>Cheyxtion` Server</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light d-flex flex-column min-vh-100">
+<body class="min-vh-100 d-flex flex-column bg-white">
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm py-3">
         <div class="container">
-            <a class="navbar-brand fw-bold text-dark fs-4" href="index.html">
-                Chey<span style="color: var(--discord-color);">Kurs</span>
-            </a>
-
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
-                <i class="fas fa-ellipsis-v"></i> 
+            <a class="navbar-brand fw-bold fs-3" href="#">Cheyxtion`</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div class="collapse navbar-collapse" id="navMain">
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link active fw-bold px-3" href="index.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link px-3" href="help.html">Help</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link px-3" href="#" data-bs-toggle="offcanvas" data-bs-target="#leaderboardMenu">
-                            <i class="fas fa-trophy text-warning me-1"></i> Leaderboard
-                        </a>
-                    </li>
-                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                        <a href="https://discord.gg/d6jpzYsjcq" target="_blank" class="btn btn-discord shadow-sm text-white">
-                            <i class="fab fa-discord me-2"></i> Discord
+                    <li class="nav-item"><a class="nav-link active fw-bold px-3" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="kurs.html">Kurs <i class="fa-solid fa-arrow-trend-up small"></i></a></li>
+                    <li class="nav-item"><a class="nav-link px-3 pointer" data-bs-toggle="offcanvas" data-bs-target="#leaderboardRight">Leaderboard</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="kurs.html">Help</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <a href="https://discord.gg/d6jpzYsjcq" class="btn btn-discord px-4 py-2 rounded-3 text-white">
+                            <i class="fab fa-discord me-2"></i>Discord
                         </a>
                     </li>
                 </ul>
@@ -44,93 +34,106 @@
         </div>
     </nav>
 
-    <main class="flex-grow-1 d-flex align-items-center justify-content-center p-3">
-        <div class="card converter-card shadow-lg border-0">
-            <div class="text-center mb-4">
-                <h2 class="fw-bold h4 mb-1">Konverter CT</h2>
-                <p class="text-muted small">Presisi tinggi untuk nilai tukar pasar.</p>
-            </div>
-
-            <div class="mb-3">
-                <label class="label-text">Jumlah Cheyxtion Token (CXT)</label>
-                <div class="input-group input-group-lg">
-                    <span class="input-group-text bg-white border-end-0 text-muted">CT</span>
-                    <input type="text" id="ct-input" class="form-control border-start-0 ps-1" value="3.289,00">
+    <main class="vh-100 d-flex align-items-center">
+        <div class="container">
+            <div class="row align-items-center gy-4">
+                <div class="col-lg-6 text-center text-lg-start">
+                    <span class="badge rounded-pill bg-soft-primary px-3 py-2 mb-3">Introducing Ronin Bot Ecosystem</span>
+                    <h1 class="display-4 fw-800 mb-3">Kelola Ekonomi <br> Digitalmu dengan <br> <span class="text-primary-gradient">Presisi.</span></h1>
+                    <p class="text-muted mb-4 pe-lg-5">Platform integrasi resmi Cheyxtion. Pantau saldo bank, konversi koin CT ke Rupiah, dan lihat peringkatmu secara real-time.</p>
+                    <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
+                        <a href="kurs.html" class="btn btn-outline-dark btn-lg px-4 py-2 rounded-pill fw-bold d-flex align-items-center justify-content-center">
+                            Pelajari fitur
+                        </a>
+                        <a href="https://discord.gg/d6jpzYsjcq" class="btn btn-dark-discord btn-lg px-4 py-2 rounded-pill fw-bold text-white">
+                            <i class="fab fa-discord me-2"></i>Join Server
+                        </a>
+                    </div>
                 </div>
-            </div>
-
-            <div class="text-center my-2 text-muted"><i class="fas fa-arrow-down"></i></div>
-
-            <div class="mb-4">
-                <label class="label-text d-flex justify-content-between">
-                    Estimasi Rupiah (IDR)
-                    <span id="copy-btn" style="cursor: pointer; font-size: 11px;" class="text-primary fw-bold">
-                        <i class="fas fa-copy me-1"></i> SALIN
-                    </span>
-                </label>
-                <div class="input-group input-group-lg">
-                    <span class="input-group-text bg-white border-end-0 text-muted">Rp</span>
-                    <input type="text" id="idr-input" class="form-control border-start-0 ps-1" value="1.000,00">
-                </div>
-            </div>
-
-            <div class="alert-custom d-flex align-items-center">
-                <div class="info-icon"><i class="fas fa-info"></i></div>
-                <div class="info-text">
-                    <strong>3.289 CT = Rp 1.000,00</strong>
-                    <p id="live-clock" style="font-size: 10px; margin-bottom: 0;">*Memuat waktu...</p>
+                <div class="col-lg-6">
+                    <div class="server-card-box shadow-lg mx-auto overflow-hidden"> <div class="text-center w-100 h-100 d-flex align-items-center justify-content-center">
+                            <img src="/images/server.png" alt="Server Icon" class="server-icon-img">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="leaderboardMenu" style="border-left: 4px solid var(--discord-color);">
-        <div class="offcanvas-header border-bottom border-secondary">
-            <h5 class="offcanvas-title fw-bold"><i class="fas fa-crown text-warning me-2"></i>Top 10 Terkaya</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+    <section class="team-section py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-800">The Creators</h2>
+            <p class="text-muted">Orang di balik layar Cheyxtion`</p>
         </div>
-        <div class="offcanvas-body p-0">
-            <div id="leaderboard-list" class="list-group list-group-flush">
-                <div class="p-4 text-center text-muted">
-                    <div class="spinner-border spinner-border-sm mb-2" role="status"></div>
-                    <p class="small">Menghubungkan ke Database...</p>
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 align-items-end justify-content-center" id="teamContainer">
+            <div class="col">
+                <div class="profile-card admin-card text-center p-4 shadow-sm bg-white pointer" onclick="focusCard(this)">
+                    <div class="avatar-wrapper mb-3">
+                        <img src="/images/dc.png" class="rounded-circle">
+                    </div>
+                    <h5 class="fw-bold mb-1">Zhavane</h5>
+                    <span class="badge bg-secondary">ADMIN</span>
+                    <p class="text-muted very-small mt-2 mb-0"><i class="fab fa-discord me-1"></i>ZhieelVn#1981</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="profile-card focused owner-card text-center p-4 shadow-lg bg-white pointer" onclick="focusCard(this)">
+                    <div class="avatar-wrapper mb-3">
+                        <img src="/images/cepi.png" class="rounded-circle">
+                        <div class="crown-icon"><i class="fas fa-crown text-warning"></i></div>
+                    </div>
+                    <h5 class="fw-800 mb-1">Aichcrem</h5>
+                    <span class="badge bg-soft-primary">OWNER</span>
+                    <p class="text-muted very-small mt-2 mb-0"><i class="fab fa-discord me-1"></i>Cheffy#5709</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="profile-card admin-card text-center p-4 shadow-sm bg-white pointer" onclick="focusCard(this)">
+                    <div class="avatar-wrapper mb-3">
+                        <img src="/images/sil.jpg" class="rounded-circle">
+                    </div>
+                    <h5 class="fw-bold mb-1">Sill</h5>
+                    <span class="badge bg-secondary">ADMIN</span>
+                    <p class="text-muted very-small mt-2 mb-0"><i class="fab fa-discord me-1"></i>Sel#7778</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </section>
+
+    <footer class="bg-dark text-white mt-auto py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+                <h4 class="fw-bold mb-1">Cheyxtion`</h4>
+                <p class="very-small text-secondary mb-0">&copy; 2026 Cheyxtion. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
+                <div class="d-flex justify-content-center justify-content-md-end gap-3">
+                    <a href="#" class="footer-link"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="footer-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="footer-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="footer-link"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
     </div>
-
-    <footer class="footer-compact">
-        <div class="container">
-            <div class="row align-items-center gy-3">
-                <div class="col-md-4 text-center text-md-start">
-                    <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-1">
-                        <span class="status-dot"></span>
-                        <span class="status-text">Server Status: Online</span>
-                    </div>
-                    <p class="mb-0 copyright-text">&copy; 2026 Cheyxtion. Crafted for Community.</p>
-                </div>
-
-                <div class="col-md-4 text-center">
-                    <div class="footer-nav">
-                        <a href="index.html">Home</a>
-                        <span class="separator">•</span>
-                        <a href="help.html">Help Center</a>
-                        <span class="separator">•</span>
-                        <a href="https://discord.gg/d6jpzYsjcq" target="_blank">Support</a>
-                    </div>
-                </div>
-
-                <div class="col-md-4 text-center text-md-end">
-                    <div class="social-icons-pro">
-                        <a href="https://discord.gg/d6jpzYsjcq" title="Discord"><i class="fab fa-discord"></i></a>
-                    </div>
-                    <p class="mb-0 powered-by">Powered by <strong>Cheyxtion Bot</strong></p>
-                </div>
-            </div>
-        </div>
     </footer>
 
-    <script src="script.js"></script>
+    <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="leaderboardRight">
+        <div class="offcanvas-header border-bottom py-3">
+            <h5 class="fw-800 mb-0">🏆 Leaderboard Terkaya</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body bg-light" id="leaderboardContent"></div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

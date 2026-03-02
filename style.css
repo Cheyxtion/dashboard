@@ -1,302 +1,224 @@
-/* 1. Variable & Reset */
 :root {
     --discord-color: #5865F2;
-    --primary-custom: #5865F2;
-    --dark-bg: #1a1c1e;
+    --primary-gradient: linear-gradient(135deg, #5865F2 0%, #838dfa 100%);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* 2. Global Layout (Kunci No-Scroll) */
+/* --- BASE STYLES --- */
 body {
-    background-color: #f8f9fa;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Tinggi minimal seukuran layar */
-    overflow: hidden;  /* Matikan scroll di desktop */
-}
-
-/* Biar di HP tetep bisa scroll kalau layar kekecilan */
-@media (max-width: 768px) or (max-height: 700px) {
-    body { overflow-y: auto; }
-}
-
-/* 3. Navbar Modern */
-.navbar {
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    padding: 12px 0;
-}
-
-.navbar .container {
-    max-width: 1000px;
-}
-
-.navbar-brand {
-    font-size: 1.4rem;
-    letter-spacing: -0.5px;
-}
-
-.nav-link {
-    font-weight: 600;
-    color: #444 !important;
-    margin: 0 10px;
-    font-size: 0.95rem;
-}
-
-.nav-link:hover, .nav-link.active {
-    color: var(--discord-color) !important;
-}
-
-/* 4. Converter Card (Pusat Perhatian) */
-main {
-    flex: 1; /* Ambil sisa ruang kosong antara navbar & footer */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.converter-card {
-    border: none;
-    border-radius: 28px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.06);
-    background-color: white;
-    padding: 2rem;
-    width: 100%;
-    max-width: 420px; /* Lebar card biar nggak kegedean di desktop */
-    transition: transform 0.3s ease;
-}
-
-.converter-card:hover {
-    transform: translateY(-5px);
-}
-
-/* 5. Input & Typography */
-.label-text {
-    color: #666;
-    font-weight: 600;
-    font-size: 0.8rem;
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.input-group-text {
-    background-color: #fcfcfc !important;
-    border-right: none;
-    color: #999;
-    font-weight: 600;
-}
-
-.form-control {
-    border-left: none;
-    font-size: 1.6rem !important; /* Ukuran angka lebih proporsional */
-    font-weight: 700;
-    color: #2d3436;
-}
-
-.form-control:focus {
-    box-shadow: none;
-    border-color: #dee2e6;
-}
-
-.arrow-icon {
-    color: #cbd5e0;
-    font-size: 1rem;
-    margin: 10px 0;
-}
-
-/* 6. Info Box */
-.alert-custom {
-    background-color: #e0f7fa;
-    border-radius: 18px;
-    padding: 1rem;
-    border: none;
-}
-
-.info-icon {
-    background-color: #00bcd4;
-    color: white;
-    border-radius: 50%;
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    margin-right: 12px;
-}
-
-.info-text strong {
-    color: #007c91;
-    font-size: 0.9rem;
-}
-
-.info-text p {
-    color: #555;
-    font-size: 0.75rem;
+    font-family: 'Inter', sans-serif;
     margin: 0;
+    background-color: #ffffff;
+    overflow-x: hidden; /* Biar gak ada scroll samping pas animasi zoom */
 }
 
-/* 7. Footer Compact (Tipis & Elegan) */
-.footer-compact {
-    background-color: var(--dark-bg);
-    padding: 15px 0;
-    color: white;
+/* --- TYPOGRAPHY --- */
+.fw-800 { font-weight: 800; }
+.text-primary-gradient {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
 }
+.bg-soft-primary { background-color: #eef0ff; color: var(--discord-color); font-weight: 600; }
 
-.footer-compact .container {
-    max-width: 1000px;
+/* --- NAVBAR --- */
+.navbar { 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important;
+    z-index: 1000;
 }
-
-.social-icons a {
-    color: rgba(255,255,255,0.6);
-    font-size: 1.1rem;
-    margin-left: 15px;
-    transition: 0.3s;
-}
-
-.social-icons a:hover {
-    color: var(--discord-color);
-    transform: translateY(-2px);
-    display: inline-block;
-}
-
-/* 8. Discord Button */
-.btn-discord {
-    background-color: var(--discord-color);
-    color: white;
-    border-radius: 10px;
-    padding: 8px 16px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    border: none;
-    transition: all 0.3s ease;
-}
-
-.btn-discord:hover {
-    background-color: #4752c4;
-    box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
-    color: white;
-}
-
-/* Animasi Fade In */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-main {
-    animation: fadeIn 0.8s ease-out;
-}
-
-/* Footer Pro Styling */
-.footer-compact {
-    background-color: #1a1c1e;
-    padding: 25px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.status-dot {
-    height: 8px;
-    width: 8px;
-    background-color: #2ecc71; /* Warna Hijau Online */
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 8px;
-    box-shadow: 0 0 8px #2ecc71;
-    animation: pulse-green 2s infinite;
-}
-
-@keyframes pulse-green {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(46, 204, 113, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
-}
-
-.status-text {
-    font-size: 0.7rem;
-    color: #9da3af;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-}
-
-.copyright-text, .powered-by {
-    font-size: 0.75rem;
-    color: #636e72;
-}
-
-.footer-nav a {
-    color: #dbdee1;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: 0.3s;
-}
-
-.footer-nav a:hover {
-    color: var(--discord-color);
-}
-
-.separator {
-    color: #444;
-    margin: 0 8px;
-}
-
-.social-icons-pro a {
-    color: #ffffff;
-    font-size: 1.1rem;
-    margin-left: 15px;
-    opacity: 0.6;
-    transition: 0.3s;
-}
-
-.social-icons-pro a:hover {
-    opacity: 1;
-    color: var(--discord-color);
-    transform: translateY(-2px);
-    display: inline-block;
-}
-
-/* Navbar Fixes */
-.navbar-brand {
-    letter-spacing: -1px;
-}
-
 .nav-link {
-    color: #444 !important;
-    font-size: 0.95rem;
-    transition: 0.3s;
+    position: relative;
+    transition: color 0.3s ease;
+    font-weight: 600;
+}
+.nav-link::after {
+    content: ''; position: absolute; width: 0; height: 2px;
+    bottom: -2px; left: 50%; background-color: var(--discord-color);
+    transition: 0.3s ease; transform: translateX(-50%);
+}
+.nav-link:hover::after { width: 70%; }
+.nav-link:hover { color: var(--discord-color) !important; }
+
+/* --- BUTTONS --- */
+.btn-discord { background-color: var(--discord-color); border: none; transition: 0.3s; color: white !important; }
+.btn-discord:hover { background-color: #4752c4; transform: translateY(-2px); }
+.btn-dark-discord { background-color: #1a1a1a; border: none; transition: 0.3s; color: white !important; }
+.btn-dark-discord:hover { background-color: var(--discord-color); transform: translateY(-3px); }
+
+/* --- FULL PAGE HERO (1 PAGE FIT) --- */
+main {
+    min-height: calc(100vh - 86px); /* 86px adalah perkiraan tinggi navbar */
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
 }
 
-.nav-link:hover, .nav-link.active {
-    color: var(--discord-color) !important;
+/* --- SERVER ICON BOX --- */
+.server-card-box {
+    background: #8e91c1;
+    height: 350px; width: 350px;
+    border-radius: 60px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 15px 35px rgba(142, 145, 193, 0.2);
+}
+.server-card-box:hover {
+    transform: scale(1.05) rotate(-2deg);
+    background: #7a7da8;
+    box-shadow: 0 25px 50px rgba(142, 145, 193, 0.4);
 }
 
-/* KHUSUS MOBILE MENU (Dropdown Melayang) */
+/* --- TEAM SECTION (THE CREATORS) --- */
+.team-section {
+    padding: 100px 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.profile-card {
+    border-radius: 30px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+    position: relative;
+}
+
+/* Efek Zoom Pas Diklik (Focused) */
+.profile-card.focused {
+    transform: scale(1.18) translateY(-15px) !important;
+    z-index: 10;
+    box-shadow: 0 20px 40px rgba(88, 101, 242, 0.25) !important;
+    border-color: var(--discord-color);
+}
+
+/* Card yang tidak diklik jadi agak kecil & redup */
+#teamContainer:has(.focused) .profile-card:not(.focused) {
+    transform: scale(0.9);
+    opacity: 0.6;
+    filter: blur(1px);
+}
+
+.avatar-wrapper img {
+    width: 90px; height: 90px;
+    object-fit: cover;
+    border: 3px solid #f0f0f0;
+}
+
+.focused .avatar-wrapper img {
+    width: 110px; height: 110px;
+    border-color: var(--discord-color);
+}
+
+/* Crown khusus Owner */
+.crown-icon {
+    position: absolute;
+    top: -15px; left: 50%;
+    transform: translateX(-50%) rotate(-10deg);
+    font-size: 1.8rem;
+    filter: drop-shadow(0 2px 5px rgba(255, 193, 7, 0.5));
+    display: none; /* Sembunyi secara default */
+}
+.owner-card .crown-icon { display: block; } /* Cuma muncul di Owner */
+
+/* --- SLIM FOOTER --- */
+footer {
+    background-color: #0f1113 !important;
+    padding: 1.5rem 0 !important;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+.footer-link { color: rgba(255,255,255,0.5); text-decoration: none; transition: 0.3s; }
+.footer-link:hover { color: white; transform: translateY(-2px); }
+
+/* Responsive */
 @media (max-width: 991px) {
-    .navbar-collapse {
-        background: white;
-        position: absolute; /* Menu melayang di atas card */
-        top: 70px;
-        left: 0;
-        width: 100%;
-        padding: 20px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        border-bottom: 3px solid var(--discord-color);
-        z-index: 9999;
+    .profile-card.focused { transform: scale(1.05) !important; }
+}
+
+/* --- LEADERBOARD MODAL/CARD STYLE --- */
+.leaderboard-wrapper {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    max-width: 450px;
+    margin: 20px auto;
+    border: 1px solid rgba(88, 101, 242, 0.1);
+}
+
+.leaderboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background: #f8f9fd;
+    transition: 0.3s;
+    opacity: 0; /* Buat animasi */
+    transform: translateX(30px); /* Buat animasi */
+}
+
+.leaderboard-item:hover {
+    background: #eef0ff;
+    transform: scale(1.02);
+}
+
+.rank-number {
+    font-weight: 800;
+    color: var(--discord-color);
+    width: 40px;
+    font-size: 1.2rem;
+}
+
+.user-info { flex-grow: 1; }
+.user-info h6 { margin: 0; font-weight: 700; color: #2c2f33; }
+.user-info span { font-size: 0.85rem; color: #72767d; }
+
+.balance-info {
+    font-weight: 800;
+    color: #43b581; /* Warna hijau sukses */
+}
+
+/* --- ANIMASI SAKTI --- */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
-    
-    .nav-item {
-        text-align: center;
-        padding: 10px 0;
-    }
+}
+
+.animate-item {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Styling khusus buat gambar di dalam box server */
+.server-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Biar gambar nutupin box tanpa gepeng */
+    transition: transform 0.5s ease;
+}
+
+.server-card-box:hover .server-icon-img {
+    transform: scale(1.1); /* Efek zoom dikit pas di-hover biar cakep */
+}
+
+/* Tambahan dikit biar box-nya gak kaku */
+.server-card-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #5865F2; /* Warna dasar Discord kalo gambar transparan */
+    overflow: hidden; /* Penting biar gambar gak keluar dari border-radius */
 }
