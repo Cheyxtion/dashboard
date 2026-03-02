@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Centre | Cheyxtion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #313338; color: #dbdee1; font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+        .navbar { background-color: #2b2d31 !important; border-bottom: 1px solid #1e1f22; }
+        .help-container { max-width: 600px; margin: 40px auto; background-color: #2b2d31; border-radius: 8px; overflow: hidden; border-left: 4px solid #ed4245; }
+        .help-content { padding: 20px; }
+        .bot-header { display: flex; align-items: center; margin-bottom: 20px; }
+        .bot-logo { width: 48px; height: 48px; border-radius: 50%; margin-left: auto; }
+        .category-title { color: #ffffff; font-weight: bold; margin-top: 20px; display: flex; align-items: center; }
+        .category-title i { margin-right: 8px; }
+        .command-list { list-style: none; padding-left: 0; margin-top: 10px; }
+        .command-item { margin-bottom: 8px; line-height: 1.5; }
+        .cmd { background-color: #1e1f22; color: #ffffff; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
+        .desc { color: #b5bac1; font-size: 0.9em; }
+        .footer-img { width: 100%; margin-top: 20px; border-radius: 4px; }
+        .btn-back { color: #ffffff; text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; margin-bottom: 20px; }
+        .btn-back:hover { color: #5865f2; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark shadow-sm sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">Chey<span style="color: #5865f2;">Kurs</span></a>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <a href="index.html" class="btn-back"><i class="fas fa-arrow-left me-2"></i> Kembali ke Konverter</a>
+
+    <div class="help-container shadow-lg">
+        <div class="help-content">
+            <div class="bot-header">
+                <div>
+                    <h5 class="mb-1 text-white"><img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" width="20" class="me-2">Cheyxtion Bot Help Centre</h5>
+                    <p class="small mb-0 text-secondary">Gunakan prefix <strong>!</strong> sebelum mengetik command.</p>
+                </div>
+                <img src="https://i.imgur.com/your-bot-logo.png" class="bot-logo" alt="Bot Logo">
+            </div>
+
+            <hr style="border-color: #4e5058;">
+
+            <div class="category-title"><i class="fas fa-money-bill-wave text-warning"></i> Economy & Dasar</div>
+            <ul class="command-list">
+                <li class="command-item"><span class="cmd">!me</span> <span class="desc">- Cek profile kamu.</span></li>
+                <li class="command-item"><span class="cmd">!wallet</span> <span class="desc">- Cek saldo cash kamu.</span></li>
+                <li class="command-item"><span class="cmd">!daily</span> <span class="desc">- Ambil hadiah harian.</span></li>
+                <li class="command-item"><span class="cmd">!work</span> <span class="desc">- Untuk mendapatkan uang dari kerja.</span></li>
+                <li class="command-item"><span class="cmd">!bank</span> <span class="desc">- Untuk mengelola aset kamu.</span></li>
+            </ul>
+
+            <div class="category-title"><i class="fas fa-shopping-cart text-info"></i> Shop & Inventory</div>
+            <ul class="command-list">
+                <li class="command-item"><span class="cmd">!shop</span> <span class="desc">- Membuka store pusat.</span></li>
+                <li class="command-item"><span class="cmd">!tas</span> <span class="desc">- Buka inventory (Pasang Role, Badge, Gift).</span></li>
+            </ul>
+
+            <div class="category-title"><i class="fas fa-gamepad text-danger"></i> Game</div>
+            <ul class="command-list">
+                <li class="command-item"><span class="cmd">!kcf</span> <span class="desc">- Untuk memulai game Coinflip.</span></li>
+            </ul>
+
+            <img src="https://i.imgur.com/your-footer-banner.png" class="footer-img" alt="Footer Banner">
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
