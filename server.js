@@ -11,9 +11,12 @@ app.use(express.json()); // Supaya server bisa baca data format JSON
 
 // --- 1. KONEKSI KE MONGODB ---
 // Pastikan di Render.com kamu sudah setting Environment Variable MONGO_URI
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ Berhasil Terhubung ke MongoDB!'))
-  .catch(err => console.error('❌ Gagal Koneksi ke Mongo:', err));
+// Ganti bagian mongoose.connect lama dengan ini
+const MONGO_URI = "mongodb+srv://ZhilvaniAzzuar:asd123@database.vjebium.mongodb.net/?appName=database";
+
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('✅ Koneksi Mongo Berhasil!'))
+  .catch(err => console.error('❌ Gagal konek:', err));
 
 // --- 2. DEFINISI SCHEMA ---
 // Ini harus sama persis dengan nama field di database Bot kamu
