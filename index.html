@@ -9,107 +9,71 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bg-light d-flex flex-column min-vh-100">
 
-    <nav class="navbar navbar-expand-lg navbar-white bg-white shadow-sm sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold text-dark" href="#">Chey<span class="text-primary-custom">Kurs</span></a>
-        
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">Home</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link" href="help.html">Help</a>
-                </li>
-                <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                    <a href="https://discord.gg/d6jpzYsjcq" target="_blank" class="btn btn-discord d-flex align-items-center">
-                        <i class="fab fa-discord me-2"></i> Discord
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-    <main class="container-fluid py-5">
-        <div class="row justify-content-center align-items-center min-vh-75 py-2">
-            <div class="col-md-8 col-lg-5 col-xl-4 col-xxl-3">
-                <div class="card converter-card">
-                    <div class="text-center mb-4">
-                        <h2 class="fw-bold h4 mb-1">Konverter CT</h2>
-                        <p class="text-muted small">Presisi tinggi untuk nilai tukar pasar.</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="label-text">Jumlah CT</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-white">CT</span>
-                            <input type="text" id="ct-input" class="form-control" placeholder="0,00" value="3.289,00">
-                        </div>
-                    </div>
-
-                    <div class="text-center arrow-icon my-2">
-                        <i class="fas fa-arrow-down fa-lg"></i>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="label-text">Estimasi Rupiah (IDR)</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-white">Rp</span>
-                            <input type="text" id="idr-input" class="form-control" placeholder="0,00" value="1.000,00">
-                        </div>
-                    </div>
-
-                    <div class="alert-custom d-flex align-items-center mt-3">
-                        <div class="info-icon"><i class="fas fa-info"></i></div>
-                        <div class="info-text">
-                            <strong>3.289 CT = Rp 1.000,00</strong>
-                            <p>*Patokan kurs tetap pasar hari ini.</p>
-                        </div>
-                    </div>
-                </div> </div> </div> </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
-</body>
-<footer class="footer-custom mt-5">
-    <div class="container">
-        <div class="row gy-4 align-items-center">
-            <div class="col-lg-4 text-center text-lg-start">
-                <a class="navbar-brand fw-bold text-white fs-3" href="#">
-                    Chey<span class="text-primary-custom">Kurs</span>
+    <nav class="navbar navbar-expand-lg sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-dark" href="#">
+                Chey<span class="text-primary-custom">Kurs</span>
+            </a>
+            <div class="ms-auto d-flex align-items-center">
+                <a class="nav-link me-3 d-none d-sm-block" href="#">Home</a>
+                <a class="nav-link me-3 d-none d-sm-block" href="help.html">Help</a>
+                <a href="https://discord.gg/d6jpzYsjcq" target="_blank" class="btn btn-discord btn-sm">
+                    <i class="fab fa-discord me-1"></i> Discord
                 </a>
-                <p class="text-secondary small mt-2">
-                    Solusi konversi mata uang CT ke IDR tercepat, akurat, dan transparan untuk komunitas Cheyxtion.
-                </p>
-            </div>
-
-            <div class="col-lg-4 text-center">
-                <div class="footer-links">
-                    <a href="index.html">Home</a>
-                    <a href="help.html">Help</a>
-                    <a href="https://discord.gg/d6jpzYsjcq" target="_blank">Discord</a>
-                </div>
-            </div>
-
-            <div class="col-lg-4 text-center text-lg-end">
-                <div class="social-icons mb-2">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="https://discord.gg/d6jpzYsjcq"><i class="fab fa-discord"></i></a>
-                </div>
-                <p class="mb-0 text-secondary" style="font-size: 0.75rem;">
-                    &copy; 2026 Cheyxtion Team. All rights reserved.
-                </p>
             </div>
         </div>
-    </div>
-</footer>
+    </nav>
+
+    <main class="flex-grow-1 d-flex align-items-center justify-content-center p-3">
+        <div class="card converter-card shadow-lg border-0">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold h4 mb-1">Konverter CT</h2>
+                <p class="text-muted small">Presisi tinggi untuk nilai tukar pasar.</p>
+            </div>
+
+            <div class="mb-3">
+                <label class="label-text">Jumlah CT</label>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-white border-end-0">CT</span>
+                    <input type="text" id="ct-input" class="form-control border-start-0 ps-1" value="3.289,00">
+                </div>
+            </div>
+
+            <div class="text-center my-2 text-muted"><i class="fas fa-arrow-down"></i></div>
+
+            <div class="mb-4">
+                <label class="label-text">Estimasi Rupiah (IDR)</label>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-white border-end-0">Rp</span>
+                    <input type="text" id="idr-input" class="form-control border-start-0 ps-1" value="1.000,00">
+                </div>
+            </div>
+
+            <div class="alert-custom d-flex align-items-center">
+                <div class="info-icon"><i class="fas fa-info"></i></div>
+                <div class="info-text">
+                    <strong>3.289 CT = Rp 1.000,00</strong>
+                    <p style="font-size: 10px;">*Patokan kurs tetap pasar hari ini.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer-compact bg-dark text-white py-3">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <p class="mb-0 small opacity-75">&copy; 2026 Cheyxtion Team.</p>
+            <div class="footer-links-small my-2 my-md-0">
+                <a href="index.html" class="text-white-50 text-decoration-none mx-2 small">Home</a>
+                <a href="help.html" class="text-white-50 text-decoration-none mx-2 small">Help</a>
+            </div>
+            <div class="social-small">
+                <a href="#" class="text-white mx-2"><i class="fab fa-instagram"></i></a>
+                <a href="https://discord.gg/d6jpzYsjcq" class="text-white mx-2"><i class="fab fa-discord"></i></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
 </html>
