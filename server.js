@@ -7,6 +7,9 @@ const app = express();
 app.use(cors()); // Biar website bisa akses API
 app.use(express.json());
 
+const cors = require('cors');
+app.use(cors()); // Ini wajib ada di paling atas setelah 'app' didefinisikan
+
 // 1. Konek ke MongoDB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Koneksi Mongo Berhasil!'))
