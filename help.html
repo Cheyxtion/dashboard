@@ -3,160 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Help Centre | Cheyxtion Bot</title>
+    <title>Help Center | Cheyxtion`</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
     <style>
-        :root { --discord-blurple: #5865F2; --discord-dark: #313338; --discord-card: #2b2d31; }
-        body { background-color: var(--discord-dark); color: #dbdee1; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
-        
-        /* Container Adaptive */
-        .help-wrapper { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
-        
-        /* Header Styling */
-        .main-header { margin-bottom: 30px; border-left: 5px solid var(--discord-blurple); padding-left: 20px; }
-
-        /* Card Logic */
-        .help-card { 
-            background-color: var(--discord-card); 
-            border-radius: 16px; 
-            height: 100%; /* Biar tinggi kotak sama rata di desktop */
-            transition: 0.3s;
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 25px;
-        }
-        .help-card:hover { transform: translateY(-5px); background: #383a40; }
-
-        .category-title { 
-            font-size: 1.2rem; 
-            font-weight: 800; 
-            margin-bottom: 20px; 
-            display: flex; 
-            align-items: center;
-            border-bottom: 2px solid rgba(255,255,255,0.05);
-            padding-bottom: 10px;
+        /* --- RESET & LAYOUT ENGINE --- */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Mencegah geser kanan kiri */
+            font-family: 'Inter', sans-serif;
         }
 
-        .cmd-item { margin-bottom: 18px; }
-        .cmd-name { 
-            color: #ffffff; 
-            font-family: 'Consolas', monospace; 
-            font-weight: bold; 
-            background: #1e1f22; 
-            padding: 2px 8px; 
-            border-radius: 5px;
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            /* Background Pattern sesuai screenshot */
+            background-image: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), 
+                              url('https://img.freepik.com/free-vector/white-abstract-background_23-2148810353.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        /* --- NAVBAR STICKY --- */
+        .navbar {
+            flex-shrink: 0;
+            background: white !important;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* --- MAIN CONTENT (The Fix) --- */
+        main {
+            flex: 1 0 auto; /* Ini yang bikin footer terdorong ke bawah */
+            padding-top: 40px; /* Jarak pas dari navbar ke judul */
+            padding-bottom: 40px;
+        }
+
+        /* --- TYPOGRAPHY & HEADER --- */
+        .fw-800 { font-weight: 800; }
+        .text-primary-gradient {
+            background: linear-gradient(45deg, #5865F2, #854dee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-badge {
+            background-color: #eef0ff;
+            color: #5865F2;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        /* --- TABS NAVIGATION --- */
+        .nav-pills {
+            background: white;
+            padding: 6px;
+            border-radius: 15px;
+            display: inline-flex;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .nav-pills .nav-link {
+            color: #666 !important;
+            font-weight: 600;
             font-size: 0.9rem;
-        }
-        .cmd-desc { display: block; margin-top: 5px; color: #b5bac1; font-size: 0.85rem; }
-
-        .badge-new { background: #ed4245; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
-
-        /* Button Kembali */
-        .btn-back { color: #aaa; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
-        .btn-back:hover { color: var(--discord-blurple); }
-
-        /* CSS KHUSUS DESKTOP (Layout B) */
-        @media (min-width: 992px) {
-            .row-desktop { display: flex; flex-wrap: wrap; }
-            .col-economy { flex: 0 0 60%; max-width: 60%; } /* Economy dapet space lebih gede */
-            .col-side { flex: 0 0 40%; max-width: 40%; }    /* Shop & Game di sampingnya */
-            .side-stack { display: flex; flex-direction: column; gap: 20px; height: 100%; }
+            padding: 10px 20px;
+            border-radius: 12px;
+            transition: 0.3s;
         }
 
-        /* CSS KHUSUS MOBILE (Layout A) */
-        @media (max-width: 991px) {
-            .help-wrapper { margin: 20px auto; }
-            .help-card { margin-bottom: 20px; }
+        .nav-pills .nav-link.active {
+            background-color: #5865F2 !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+        }
+
+        /* --- COMMAND CARDS --- */
+        .command-card {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 20px;
+            padding: 25px;
+            height: 100%;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .command-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            border-color: #5865F2;
+        }
+        
+        .command-card .badge {
+            transition: 0.3s;
+            cursor: default;
+        }
+
+        .command-card:hover .badge {
+            transform: scale(1.1);
+        }
+
+        .cmd-label {
+            color: #5865F2;
+            background: #f0f2ff;
+            font-family: 'monospace';
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #2c2f33;
+        }
+
+        .card-text {
+            font-size: 0.88rem;
+            color: #72767d;
+            line-height: 1.5;
+        }
+
+        /* --- FOOTER (The Perfect Fit) --- */
+        footer {
+            flex-shrink: 0;
+            background-color: #111214 !important;
+            padding: 25px 0 !important;
+            color: white;
+        }
+
+        .footer-brand {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .footer-copy {
+            font-size: 0.75rem;
+            opacity: 0.5;
         }
     </style>
 </head>
 <body>
 
-<div class="help-wrapper">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="index.html" class="btn-back"><i class="fas fa-arrow-left me-2"></i> Kembali</a>
-        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" width="35" alt="Bot Logo">
-    </div>
-
-    <header class="main-header">
-        <h2 class="text-white fw-bold mb-0">Cheyconomy Help Centre</h2>
-        <p class="text-muted"><span class="text-white">Panduan Interaktif & Daftar Command Bot Server</span></p>
-    </header>
-
-    <div class="row g-4">
-        
-        <div class="col-lg-7">
-            <div class="help-card">
-                <div class="category-title text-warning"><i class="fas fa-wallet me-2"></i> Economy & Dasar</div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="cmd-item">
-                            <span class="cmd-name">!me</span>
-                            <span class="cmd-desc">Cek profile, XP, dan level sosialmu.</span>
-                        </div>
-                        <div class="cmd-item">
-                            <span class="cmd-name">!wallet</span>
-                            <span class="cmd-desc">Lihat saldo cash di dompet.</span>
-                        </div>
-                        <div class="cmd-item">
-                            <span class="cmd-name">!daily</span>
-                            <span class="cmd-desc">Ambil jatah uang harian gratis.</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="cmd-item">
-                            <span class="cmd-name">!work</span>
-                            <span class="cmd-desc">Bekerja keras demi segenggam CT.</span>
-                        </div>
-                        <div class="cmd-item">
-                            <span class="cmd-name">!bank</span>
-                            <span class="cmd-desc">Simpan asetmu agar aman dari maling.</span>
-                        </div>
-                    </div>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-light py-3">
+        <div class="container">
+            <a class="navbar-brand fw-800 fs-3" href="index.html">Cheyxtion`</a>
+            <div class="ms-auto">
+                <a href="index.html" class="btn btn-outline-dark rounded-pill px-4 fw-bold btn-sm">Kembali ke Home</a>
             </div>
         </div>
+    </nav>
 
-        <div class="col-lg-5">
-            <div class="d-flex flex-column gap-4 h-100">
+<main>
+        <div class="container text-center">
+            
+            <div class="header-badge">Cheyconomy Documentation v2.0</div>
+            <h1 class="fw-800 display-5 mb-2">Panduan & <span class="text-primary-gradient">Command List</span></h1>
+            <p class="text-muted mx-auto mb-4" style="max-width: 550px; font-size: 0.95rem;">
+                Sekarang dengan tampilan lebih fresh! Cek indikator <span class="badge rounded-pill bg-danger" style="font-size: 0.7rem;">NEW UI</span> untuk melihat sistem yang baru saja kami renovasi.
+            </p>
+
+            <div class="mb-5">
+                <ul class="nav nav-pills gap-1 justify-content-center" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#economy"><i class="fas fa-wallet me-2"></i>Economy & Dasar</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#shop"><i class="fas fa-shopping-bag me-2"></i>Shop & Inventory</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#game"><i class="fas fa-gamepad me-2"></i>Game Corner</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tab-content text-start">
                 
-                <div class="help-card">
-                    <div class="category-title text-info"><i class="fas fa-store me-2"></i> Shop & Inventory</div>
-                    <div class="cmd-item">
-                        <span class="cmd-name">!shop</span>
-                        <span class="cmd-desc">Store pusat beli Role & Item.</span>
-                    </div>
-                    <div class="cmd-item">
-                        <span class="cmd-name">!tas</span>
-                        <span class="cmd-desc">Buka inventory & pasang badge.</span>
+                <div class="tab-pane fade show active" id="economy">
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="command-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="cmd-label">!me</span>
+                                    <span class="badge rounded-pill bg-danger" style="font-size: 0.65rem;">NEW UI</span>
+                                </div>
+                                <div class="card-title">Cek Identitas</div>
+                                <p class="card-text">Intip profil lengkapmu. Sekarang hadir dengan kartu identitas visual yang lebih estetik!</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="command-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="cmd-label">!wallet</span>
+                                    <span class="badge rounded-pill bg-danger" style="font-size: 0.65rem;">NEW UI</span>
+                                </div>
+                                <div class="card-title">Cek Dompet</div>
+                                <p class="card-text">Tampilan saldo CT yang lebih rapi dan detail transaksimu kini makin jelas.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="command-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="cmd-label">!bank</span>
+                                    <span class="badge rounded-pill bg-danger" style="font-size: 0.65rem;">NEW UI</span>
+                                </div>
+                                <div class="card-title">Manajemen Bank</div>
+                                <p class="card-text">Deposit & Withdraw lebih aman dengan konfirmasi button di bawah pesan.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="command-card">
+                                <span class="cmd-label">!daily</span>
+                                <div class="card-title">Claim Daily</div>
+                                <p class="card-text">Ambil jatah koin harianmu. Jangan sampai streak-mu putus!</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="command-card">
+                                <span class="cmd-label">!work</span>
+                                <div class="card-title">Kerja Rodi</div>
+                                <p class="card-text">Dapatkan koin CT dengan bekerja. Hati-hati kecapean!</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="help-card" style="border-left-color: #ed4245;">
-                    <div class="category-title text-danger"><i class="fas fa-dice me-2"></i> Gamecorner</div>
-                    <div class="cmd-item">
-                        <span class="cmd-name">!kcf [nominal]</span>
-                        <span class="cmd-desc">Coinflip klasik lawan sistem.</span>
+                <div class="tab-pane fade" id="shop">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="command-card border-primary">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="cmd-label">!shop</span>
+                                    <span class="badge rounded-pill bg-danger" style="font-size: 0.65rem;">NEW UI</span>
+                                </div>
+                                <div class="card-title">Lihat Toko</div>
+                                <p class="card-text">Katalog item sekarang menggunakan menu dropdown yang lebih interaktif dan mudah dinavigasi.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="command-card">
+                                <span class="cmd-label">!tas</span>
+                                <div class="card-title">Buka Inventory</div>
+                                <p class="card-text">Cek semua barang koleksimu. Sekarang item dikelompokkan berdasarkan tipe.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="cmd-item">
-                        <span class="cmd-name">!adu @user [nominal]</span> <span class="badge-new">NEW</span>
-                        <span class="cmd-desc">Tantang member lain taruhan CT di game coinflip.</span>
-                    </div>
-                    <div class="cmd-item">
-                        <span class="cmd-name">!slot [nominal]</span> <span class="badge-new">NEW</span>
-                        <span class="cmd-desc">Mesin jackpot keberuntungan.</span>
+                </div>
+
+                <div class="tab-pane fade" id="game">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="command-card shadow-sm border-primary" style="background: linear-gradient(to bottom right, #ffffff, #f5f6ff);">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <span class="cmd-label">!gosok</span>
+                                    <span class="badge rounded-pill bg-warning text-dark" style="font-size: 0.65rem;">NEW GAME</span>
+                                </div>
+                                <div class="card-title">Bom Gosok 💣</div>
+                                <p class="card-text">Pilih kotak dan gosok! Temukan hadiah tersembunyi, tapi awas jangan sampai kena bom!</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="command-card">
+                                <span class="cmd-label">!slot</span>
+                                <div class="card-title">Slot Machine</div>
+                                <p class="card-text">Putar mesin keberuntungan. 777 = Auto Sultan!</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="command-card">
+                                <span class="cmd-label">!kcf</span>
+                                <div class="card-title">Solo Coin Flip</div>
+                                <p class="card-text">Tebak gambar atau angka. Modal dikali dua kalau hoki!</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="command-card">
+                                <span class="cmd-label">!adu</span>
+                                <div class="card-title">Coinflip Battle</div>
+                                <p class="card-text">Duel 1vs1 lawan temanmu. Pemenang mengambil semua taruhan.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
             </div>
         </div>
+    </main>
 
-    </div>
-    <footer class="mt-5 text-center pb-5">
-        <p class="small text-muted"><span class="text-white">Butuh bantuan manual? Ketik <code class="text-white">!help</code> di Discord.</span></p>
-    </div>
-</div>
+    <footer class="text-center">
+        <div class="container">
+            <div class="footer-brand">Cheyxtion`</div>
+            <div class="footer-copy">Official Documentation &copy; 2026. Made with passion for the community.</div>
+        </div>
+    </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

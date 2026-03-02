@@ -1,64 +1,97 @@
+// Deklarasikan focusCard di luar agar bisa dipanggil oleh atribut onclick di HTML
+function focusCard(element) {
+    const cards = document.querySelectorAll('.profile-card');
+    
+    // Hapus class focused dari SEMUA kartu
+    cards.forEach(card => {
+        card.classList.remove('focused');
+    });
+    
+    // Tambah class focused hanya ke kartu yang DIKLIK
+    element.classList.add('focused');
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const leaderboardContent = document.getElementById('leaderboardContent');
     const offcanvas = document.getElementById('leaderboardRight');
     
-    const players = [
-        { name: "Cheyxtion Dev", balance: "1.250.000 CT", id: "982137" },
-        { name: "Sultan Digital", balance: "980.000 CT", id: "102938" },
-        { name: "Rich Guy", balance: "750.000 CT", id: "882731" },
-        { name: "Player Pro", balance: "500.000 CT", id: "772102" },
-        { name: "Active User", balance: "250.000 CT", id: "661293" }
-    ];
+    // --- 1. LOGIKA LEADERBOARD ---
+    const API_URL = 'https://bottai.onrender.com/api/leaderboard'; 
 
-    function renderLeaderboard() {
+    async function renderLeaderboard() {
         if (!leaderboardContent) return;
         
-        // Reset content
-        leaderboardContent.innerHTML = '';
+        leaderboardContent.innerHTML = '<div class="text-center p-4"><div class="spinner-border text-primary" role="status"></div></div>';
 
-        players.forEach((p, index) => {
-            const rank = index + 1;
-            // Tentukan icon mahkota buat juara 1
-            const crown = rank === 1 ? '👑' : `#${rank}`;
-            
-            const itemHTML = `
-                <div class="leaderboard-item shadow-sm d-flex align-items-center">
-                    <div class="rank-number">${crown}</div>
-                    <div class="user-info">
-                        <h6>${p.name}</h6>
-                        <span>ID: ${p.id}</span>
+        try {
+            const response = await fetch(API_URL);
+            const players = await response.json();
+
+            leaderboardContent.innerHTML = '';
+
+            players.forEach((p, index) => {
+                const rank = index + 1;
+                const rankDisplay = rank === 1 ? '👑' : `#${rank}`;
+                
+                let rankTitle = "";
+                let titleColor = "#5865F2"; 
+
+                if (rank === 1) {
+                    rankTitle = "The Untouchable God";
+                    titleColor = "#ffac33"; 
+                } else if (rank === 2) {
+                    rankTitle = "Server Elite Legacy";
+                } else if (rank === 3) {
+                    rankTitle = "High-Class Noble";
+                } else {
+                    rankTitle = "Cheyxtion Citizen";
+                    titleColor = "#72767d"; 
+                }
+
+                const formattedBalance = new Intl.NumberFormat('id-ID').format(p.ct_wallet) + " CT";
+
+                const itemHTML = `
+                    <div class="leaderboard-item shadow-sm">
+                        <div class="rank-badge">${rankDisplay}</div>
+                        <div class="user-meta">
+                            <span class="user-name">${p.username}</span>
+                            <span class="user-id" style="color: ${titleColor}; font-weight: 700; font-size: 0.75rem; text-transform: uppercase;">
+                                ${rankTitle}
+                            </span>
+                        </div>
+                        <div class="user-balance">${formattedBalance}</div>
                     </div>
-                    <div class="balance-info">${p.balance}</div>
-                </div>
-            `;
-            
-            leaderboardContent.insertAdjacentHTML('beforeend', itemHTML);
-        });
+                `;
+                
+                leaderboardContent.insertAdjacentHTML('beforeend', itemHTML);
+            });
 
-        // Trigger animasi staggered (satu-saatu)
-        const items = document.querySelectorAll('.leaderboard-item');
-        items.forEach((item, index) => {
             setTimeout(() => {
-                item.classList.add('animate-item');
-            }, index * 100); // Muncul tiap 0.1 detik bergantian
-        });
+                const items = document.querySelectorAll('.leaderboard-item');
+                items.forEach((item, index) => {
+                    setTimeout(() => {
+                        item.classList.add('animate-item');
+                    }, index * 100);
+                });
+            }, 50);
+
+        } catch (error) {
+            console.error("Error:", error);
+            leaderboardContent.innerHTML = '<p class="text-center text-danger small">Gagal memuat data Sultan.</p>';
+        }
     }
 
-    // Jalankan animasi setiap kali Offcanvas (menu kanan) dibuka
     if (offcanvas) {
         offcanvas.addEventListener('shown.bs.offcanvas', renderLeaderboard);
-        
-        // Bersihkan saat ditutup agar bisa dipicu ulang animasinya
         offcanvas.addEventListener('hidden.bs.offcanvas', () => {
             leaderboardContent.innerHTML = '';
         });
     }
-});
 
-// Fitur Klik Profile Card (The Creators)
-function focusCard(element) {
-    document.querySelectorAll('.profile-card').forEach(card => {
-        card.classList.remove('focused');
-    });
-    element.classList.add('focused');
-}
+    // --- 2. LOGIKA INITIAL FOCUS (OWNER) ---
+    // Kita kasih delay sedikit supaya browser selesai render CSS profil
+    setTimeout(() => {
+        const ownerCard = document.querySelector('.profile-card:nth-child(2)'); 
+        if(ownerCard) focusCard(ownerCard);
+    }, 100);
+});

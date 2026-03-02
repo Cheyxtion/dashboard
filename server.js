@@ -3,34 +3,44 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors()); // Supaya HTML bisa akses API ini
 
-// LINK LANGSUNG (Whitelist IP 0.0.0.0/0 di Atlas dulu!)
-const MONGO_URI = "mongodb+srv://ZhilvaniAzzuar:asd123@database.vjebium.mongodb.net/database?retryWrites=true&w=majority";
+// URL MongoDB Atlas kamu
+const mongoURI = "mongodb+srv://ZhilvaniAzzuar:asd123@database.vjebium.mongodb.net/database?retryWrites=true&w=majority";
 
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('✅ KONEKSI MONGODB BERHASIL'))
-  .catch(err => console.error('❌ ERROR KONEKSI:', err));
+mongoose.connect(mongoURI)
+    .then(() => console.log("Database Connected!"))
+    .catch(err => console.log(err));
 
+// Schema sesuai gambar struktur data kamu
 const userSchema = new mongoose.Schema({
-    username: String,
-    ct_wallet: { type: Number, default: 0 },
-    ct_bank: { type: Number, default: 0 }
-});
+    _id: String,
+    name: String,
+    cash: Number,
+    bank: Number
+}, { collection: 'users' }); // Pastikan nama collection-nya benar
 
-// GANTI 'users' DI BAWAH INI SESUAI NAMA COLLECTION DI ATLAS KAMU
-const User = mongoose.model('User', userSchema, 'users');
+const User = mongoose.model('User', userSchema);
 
-app.get('/api/leaderboard', async (req, res) => {
+app.get('/leaderboard', async (req, res) => {
     try {
-        const topUsers = await User.find().sort({ ct_wallet: -1 }).limit(10);
-        console.log("Data ditemukan:", topUsers.length);
-        res.json(topUsers);
+        // Mengambil data dan menjumlahkan cash + bank
+        const data = await User.aggregate([
+            {
+                $project: {
+                    name: 1,
+                    _id: 1,
+                    totalCT: { $add: ["$cash", "$bank"] }
+                }
+            },
+            { $sort: { totalCT: -1 } }, // Urutkan dari yang paling kaya
+            { $limit: 5 } // Ambil Top 5 saja
+        ]);
+        res.json(data);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).send(err);
     }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server ON di port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
