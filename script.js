@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
             leaderboardContent.insertAdjacentHTML('beforeend', itemHTML);
         });
 
-        // Trigger animasi staggered (satu-satu)
+        // Trigger animasi staggered (satu-saatu)
         const items = document.querySelectorAll('.leaderboard-item');
         items.forEach((item, index) => {
             setTimeout(() => {
