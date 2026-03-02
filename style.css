@@ -58,7 +58,7 @@ body {
 main {
     /* 0.85 untuk kontrol opacity background (semakin kecil makin jelas gambarnya) */
     background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)), 
-                url('/images/3d-white-wave-texture-background-concept-free-vector.jpg'); 
+                url('images/3d-white-wave-texture-background-concept-free-vector.jpg'); 
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
