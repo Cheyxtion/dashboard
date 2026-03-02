@@ -1,35 +1,127 @@
-/* Kita pakai warna utama Discord */
+/* Warna kustom Discord */
 :root {
-    --bs-primary: #5865F2;
-    --bs-primary-rgb: 88, 101, 242;
+    --discord-color: #5865F2;
+    --primary-custom: #5865F2; /* Sesuaikan dengan warna primer yang diinginkan */
 }
 
-/* Biar tombol-tombol Bootstrap pakai warna Discord */
-.btn-primary {
-    background-color: var(--bs-primary);
-    border-color: var(--bs-primary);
+/* Global styles */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-.btn-primary:hover {
+/* Navigasi */
+.navbar {
+    background-color: white !important;
+    border-bottom: 1px solid #eee;
+    padding: 12px 1rem;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+}
+
+.text-primary-custom {
+    color: var(--primary-custom) !important;
+}
+
+/* Tombol Discord */
+.btn-discord {
+    background-color: var(--discord-color);
+    color: white;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-weight: 500;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-discord:hover {
     background-color: #4752c4;
-    border-color: #4752c4;
+    color: white;
 }
 
-.text-primary {
-    color: var(--bs-primary) !important;
+/* Converter Card */
+.converter-card {
+    border: none;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    background-color: white;
+    padding: 2.5rem; /* Menambah padding untuk tampilan desktop lebih lapang */
 }
 
-/* Memastikan konten di tengah layar */
-.min-vh-75 {
-    min-height: 75vh;
-}
-
-/* Penyesuaian input group Bootstrap */
+/* Input Styles */
 .input-group-text {
+    background-color: white !important;
+    border-right: none;
+    color: #999;
     font-weight: 500;
 }
 
-input:focus {
-    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.2) !important;
-    border-color: var(--bs-primary) !important;
+.form-control {
+    border-left: none;
+    font-size: 1.8rem;
+    font-weight: 500;
+    padding: 1rem; /* Menambah padding input untuk keterbacaan lebih baik */
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+}
+
+.label-text {
+    color: #666;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    display: block; /* Memastikan label mengambil lebar penuh */
+}
+
+/* Ikon Panah */
+.arrow-icon {
+    color: #ccc;
+    font-size: 1.2rem;
+}
+
+/* Info Box */
+.alert-custom {
+    background-color: #e0f7fa;
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: none;
+}
+
+.info-icon {
+    background-color: #00bcd4;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.info-text strong {
+    color: #007c91;
+    font-size: 1rem;
+    display: block; /* Menempatkan teks kuat di barisnya sendiri */
+}
+
+.info-text p {
+    color: #555;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+/* Media query untuk responsivitas (jika diperlukan tambahan kustom) */
+@media (max-width: 576px) {
+    .converter-card {
+        padding: 1.5rem; /* Padding lebih kecil untuk mobile */
+    }
 }
