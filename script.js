@@ -87,27 +87,30 @@ updateClock();
 
 // --- LOGIKA FETCH LEADERBOARD (MONGODB) ---
 const leaderboardMenu = document.getElementById('leaderboardMenu');
-leaderboardMenu.addEventListener('show.bs.offcanvas', () => {
+leaderboardMenu.addEventListener('show.bs.offcanvas', async () => {
     const listContainer = document.getElementById('leaderboard-list');
     
-    // Simulasi Fetch ke Backend kamu
-    // Ganti URL ini dengan API endpoint Node.js kamu nanti
-    // fetch('/api/leaderboard').then(res => res.json()).then(data => { ... });
+    try {
+        // Panggil API yang kita buat tadi
+        const response = await fetch('http://localhost:3000/api/leaderboard');
+        const data = await response.json();
 
-    const dummyData = [
-        { name: 'Otezha', money: '25.500.000', rank: 1 },
-        { name: 'CheyBot_Fan', money: '12.200.000', rank: 2 },
-        { name: 'Member_Kaya', money: '8.450.000', rank: 3 }
-    ];
-
-    listContainer.innerHTML = dummyData.map(user => `
-        <div class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center p-3">
-            <span class="fw-bold me-3 ${user.rank === 1 ? 'text-warning' : 'text-muted'}">#${user.rank}</span>
-            <div class="flex-grow-1">
-                <div class="fw-bold small">${user.name}</div>
-                <div class="text-white-50" style="font-size: 11px;">${user.money} CT</div>
+        listContainer.innerHTML = data.map((user, index) => `
+            <div class="list-group-item bg-transparent text-white border-secondary d-flex align-items-center p-3">
+                <div class="rank-number me-3 ${index < 3 ? 'text-warning fw-bold' : 'text-muted'}" style="width: 25px;">
+                    #${index + 1}
+                </div>
+                <div class="flex-grow-1 text-truncate">
+                    <div class="fw-bold small">${user.username}</div>
+                    <div class="text-white-50" style="font-size: 11px;">
+                        ${(user.ct_wallet + user.ct_bank).toLocaleString('id-ID')} CT
+                    </div>
+                </div>
+                ${index === 0 ? '<i class="fas fa-crown text-warning"></i>' : ''}
             </div>
-            ${user.rank === 1 ? '<i class="fas fa-crown text-warning"></i>' : '<i class="fas fa-medal text-muted"></i>'}
-        </div>
-    `).join('');
+        `).join('');
+
+    } catch (err) {
+        listContainer.innerHTML = '<div class="p-4 text-danger small">Gagal menyambung ke database.</div>';
+    }
 });
