@@ -7,210 +7,156 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { 
-            --discord-blurple: #5865F2; 
-            --discord-dark: #313338; 
-            --discord-card: #2b2d31; 
-            --discord-black: #1e1f22;
-        }
+        :root { --discord-blurple: #5865F2; --discord-dark: #313338; --discord-card: #2b2d31; }
+        body { background-color: var(--discord-dark); color: #dbdee1; font-family: 'Segoe UI', sans-serif; min-height: 100vh; }
+        
+        /* Container Adaptive */
+        .help-wrapper { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+        
+        /* Header Styling */
+        .main-header { margin-bottom: 30px; border-left: 5px solid var(--discord-blurple); padding-left: 20px; }
 
-        /* KUNCI NO SCROLL */
-        html, body {
-            height: 100%;
-            margin: 0;
-            overflow: hidden; /* Matikan scroll di desktop */
-        }
-
-        body { 
-            background-color: var(--discord-dark); 
-            color: #dbdee1; 
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            flex-direction: column; /* Susun Navbar, Main, Footer secara vertikal */
-        }
-
-        /* HEADER & NAVBAR */
-        .help-nav {
-            background-color: rgba(30, 31, 34, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* MAIN CONTENT AREA */
-        main {
-            flex: 1; /* Ambil sisa ruang tengah */
-            display: flex;
-            align-items: center; /* Center secara vertikal */
-            padding: 20px 0;
-        }
-
-        .help-wrapper { 
-            width: 100%;
-            max-width: 1100px; 
-            margin: 0 auto; 
-            padding: 0 20px; 
-        }
-
-        .main-header { 
-            margin-bottom: 25px; 
-            border-left: 5px solid var(--discord-blurple); 
-            padding-left: 20px; 
-        }
-
-        /* CARDS */
+        /* Card Logic */
         .help-card { 
             background-color: var(--discord-card); 
             border-radius: 16px; 
+            height: 100%; /* Biar tinggi kotak sama rata di desktop */
+            transition: 0.3s;
             border: 1px solid rgba(255,255,255,0.05);
             padding: 25px;
-            height: 100%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
+        .help-card:hover { transform: translateY(-5px); background: #383a40; }
 
         .category-title { 
-            font-size: 1.1rem; 
+            font-size: 1.2rem; 
             font-weight: 800; 
-            margin-bottom: 15px; 
+            margin-bottom: 20px; 
             display: flex; 
             align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 2px solid rgba(255,255,255,0.05);
             padding-bottom: 10px;
-            text-transform: uppercase;
         }
 
-        .cmd-item { margin-bottom: 12px; }
+        .cmd-item { margin-bottom: 18px; }
         .cmd-name { 
             color: #ffffff; 
             font-family: 'Consolas', monospace; 
             font-weight: bold; 
-            background: var(--discord-black); 
+            background: #1e1f22; 
             padding: 2px 8px; 
             border-radius: 5px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
-        .cmd-desc { display: block; margin-top: 4px; color: #b5bac1; font-size: 0.8rem; }
-        .badge-new { background: #ed4245; font-size: 9px; padding: 2px 5px; border-radius: 4px; margin-left: 5px; vertical-align: middle;}
+        .cmd-desc { display: block; margin-top: 5px; color: #b5bac1; font-size: 0.85rem; }
 
-        /* FOOTER PRO (SLIM & NO SCROLL) */
-        .footer-pro {
-            background-color: var(--discord-black);
-            padding: 15px 0;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
+        .badge-new { background: #ed4245; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 5px; }
 
-        .status-dot {
-            height: 8px; width: 8px;
-            background-color: #2ecc71;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
-            box-shadow: 0 0 8px #2ecc71;
-            animation: pulse 2s infinite;
+        /* Button Kembali */
+        .btn-back { color: #aaa; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        .btn-back:hover { color: var(--discord-blurple); }
+
+        /* CSS KHUSUS DESKTOP (Layout B) */
+        @media (min-width: 992px) {
+            .row-desktop { display: flex; flex-wrap: wrap; }
+            .col-economy { flex: 0 0 60%; max-width: 60%; } /* Economy dapet space lebih gede */
+            .col-side { flex: 0 0 40%; max-width: 40%; }    /* Shop & Game di sampingnya */
+            .side-stack { display: flex; flex-direction: column; gap: 20px; height: 100%; }
         }
 
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.7; }
-            70% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(0.95); opacity: 0.7; }
-        }
-
-        /* RESPONSIVE HANDLING */
+        /* CSS KHUSUS MOBILE (Layout A) */
         @media (max-width: 991px) {
-            html, body { overflow: auto; height: auto; } /* Aktifkan scroll di mobile */
-            main { display: block; padding-top: 30px; }
+            .help-wrapper { margin: 20px auto; }
             .help-card { margin-bottom: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="help-nav">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a href="index.html" class="text-white text-decoration-none small">
-                <i class="fas fa-arrow-left me-2"></i> Kembali ke Konverter
-            </a>
-            <div class="text-white fw-bold">Chey<span style="color:var(--discord-blurple)">Kurs</span> Help</div>
-        </div>
-    </nav>
+<div class="help-wrapper">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a href="index.html" class="btn-back"><i class="fas fa-arrow-left me-2"></i> Kembali</a>
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" width="35" alt="Bot Logo">
+    </div>
 
-    <main>
-        <div class="help-wrapper">
-            <header class="main-header">
-                <h3 class="text-white fw-bold mb-0">Help Centre</h3>
-                <p class="text-muted small mb-0">Panduan Interaktif Command Bot Server Cheyxtion</p>
-            </header>
+    <header class="main-header">
+        <h2 class="text-white fw-bold mb-0">Cheyxtion Help Centre</h2>
+        <p class="text-muted">Panduan Interaktif & Daftar Command Bot Server</p>
+    </header>
 
-            <div class="row g-4">
-                <div class="col-lg-7">
-                    <div class="help-card" style="border-left: 4px solid #f1c40f;">
-                        <div class="category-title text-warning"><i class="fas fa-wallet me-2"></i> Economy & Dasar</div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="cmd-item">
-                                    <span class="cmd-name">!me</span>
-                                    <span class="cmd-desc">Cek profile, XP, dan level sosialmu.</span>
-                                </div>
-                                <div class="cmd-item">
-                                    <span class="cmd-name">!wallet</span>
-                                    <span class="cmd-desc">Lihat saldo cash di dompet.</span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cmd-item">
-                                    <span class="cmd-name">!work</span>
-                                    <span class="cmd-desc">Bekerja keras demi segenggam CT.</span>
-                                </div>
-                                <div class="cmd-item">
-                                    <span class="cmd-name">!bank</span>
-                                    <span class="cmd-desc">Simpan asetmu agar aman dari maling.</span>
-                                </div>
-                            </div>
+    <div class="row g-4">
+        
+        <div class="col-lg-7">
+            <div class="help-card">
+                <div class="category-title text-warning"><i class="fas fa-wallet me-2"></i> Economy & Dasar</div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="cmd-item">
+                            <span class="cmd-name">!me</span>
+                            <span class="cmd-desc">Cek profile, XP, dan level sosialmu.</span>
+                        </div>
+                        <div class="cmd-item">
+                            <span class="cmd-name">!wallet</span>
+                            <span class="cmd-desc">Lihat saldo cash di dompet.</span>
+                        </div>
+                        <div class="cmd-item">
+                            <span class="cmd-name">!daily</span>
+                            <span class="cmd-desc">Ambil jatah uang harian gratis.</span>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-lg-5">
-                    <div class="d-flex flex-column gap-3 h-100">
-                        <div class="help-card" style="border-left: 4px solid #3498db;">
-                            <div class="category-title text-info"><i class="fas fa-store me-2"></i> Shop & Inventory</div>
-                            <div class="cmd-item">
-                                <span class="cmd-name">!shop</span> <span class="cmd-desc">Store pusat beli Role & Item.</span>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="cmd-item">
+                            <span class="cmd-name">!work</span>
+                            <span class="cmd-desc">Bekerja keras demi segenggam CT.</span>
                         </div>
-                        <div class="help-card" style="border-left: 4px solid #ed4245;">
-                            <div class="category-title text-danger"><i class="fas fa-dice me-2"></i> Entertainment</div>
-                            <div class="cmd-item">
-                                <span class="cmd-name">!adu @user [angka]</span> <span class="badge-new">NEW</span>
-                                <span class="cmd-desc">Tantang member lain taruhan CT.</span>
-                            </div>
-                            <div class="cmd-item">
-                                <span class="cmd-name">!slot [angka]</span> <span class="badge-new">NEW</span>
-                                <span class="cmd-desc">Uji keberuntungan di mesin jackpot.</span>
-                            </div>
+                        <div class="cmd-item">
+                            <span class="cmd-name">!bank</span>
+                            <span class="cmd-desc">Simpan asetmu agar aman dari maling.</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
 
-    <footer class="footer-pro">
-        <div class="container d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <span class="status-dot"></span>
-                <span style="font-size: 11px; letter-spacing: 1px; color: #9da3af; font-weight: bold;">BOT STATUS: ONLINE</span>
-            </div>
-            <div class="text-secondary" style="font-size: 11px;">
-                &copy; 2026 Cheyxtion Team • Powered by CheyBot
-            </div>
-            <div class="social-links">
-                <a href="#" class="text-secondary mx-2"><i class="fab fa-instagram"></i></a>
-                <a href="https://discord.gg/d6jpzYsjcq" class="text-white-50 mx-2"><i class="fab fa-discord"></i></a>
+        <div class="col-lg-5">
+            <div class="d-flex flex-column gap-4 h-100">
+                
+                <div class="help-card">
+                    <div class="category-title text-info"><i class="fas fa-store me-2"></i> Shop & Inventory</div>
+                    <div class="cmd-item">
+                        <span class="cmd-name">!shop</span>
+                        <span class="cmd-desc">Store pusat beli Role & Item.</span>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-name">!tas</span>
+                        <span class="cmd-desc">Buka inventory & pasang badge.</span>
+                    </div>
+                </div>
+
+                <div class="help-card" style="border-left-color: #ed4245;">
+                    <div class="category-title text-danger"><i class="fas fa-dice me-2"></i> Game</div>
+                    <div class="cmd-item">
+                        <span class="cmd-name">!kcf [angka]</span>
+                        <span class="cmd-desc">Coinflip klasik lawan sistem.</span>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-name">!adu @user [angka]</span> <span class="badge-new">NEW</span>
+                        <span class="cmd-desc">Tantang member lain taruhan CT.</span>
+                    </div>
+                    <div class="cmd-item">
+                        <span class="cmd-name">!slot [angka]</span> <span class="badge-new">NEW</span>
+                        <span class="cmd-desc">Mesin jackpot keberuntungan.</span>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+    <footer class="mt-5 text-center pb-5">
+        <p class="small text-muted">Butuh bantuan manual? Ketik <code class="text-white">!help</code> di Discord.</p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
