@@ -6,44 +6,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fungsi format ke Indo 1.000,00
     function toIndoFormat(num) {
-        return num.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        return num.toLocaleString('id-ID', { 
+            minimumFractionDigits: 0, // Dibuat 0 biar gak ganggu pas ngetik awal
+            maximumFractionDigits: 2 
+        });
     }
 
-    // Fungsi ambil angka murni dari string format Indo
+    // Ambil angka murni tanpa gangguan format
     function toPureNumber(str) {
-        return parseFloat(str.replace(/\./g, '').replace(',', '.')) || 0;
+        // Hapus semua karakter kecuali angka dan koma (untuk desimal)
+        let cleanStr = str.replace(/\./g, '').replace(',', '.');
+        return parseFloat(cleanStr) || 0;
     }
 
-    // Fungsi pasang ke input
-    function updateValue(input, value) {
-        input.value = toIndoFormat(value);
-    }
-
-    // Event saat mengetik di CT
-    ctInput.addEventListener('input', (e) => {
-        let val = e.target.value.replace(/[^0-9,.]/g, ''); // Izinkan angka, koma, titik
-        let num = toPureNumber(val);
+    // Logika Konversi CT ke IDR
+    ctInput.addEventListener('input', () => {
+        let rawVal = ctInput.value;
+        let num = toPureNumber(rawVal);
+        
         let result = (num / CT_BASE) * IDR_BASE;
+        
+        // Update IDR otomatis saat CT diketik
         idrInput.value = toIndoFormat(result);
     });
 
-    // Event saat mengetik di IDR
-    idrInput.addEventListener('input', (e) => {
-        let val = e.target.value.replace(/[^0-9,.]/g, ''); // Izinkan angka, koma, titik
-        let num = toPureNumber(val);
+    // Logika Konversi IDR ke CT
+    idrInput.addEventListener('input', () => {
+        let rawVal = idrInput.value;
+        let num = toPureNumber(rawVal);
+        
         let result = (num / IDR_BASE) * CT_BASE;
+        
+        // Update CT otomatis saat IDR diketik
         ctInput.value = toIndoFormat(result);
     });
 
-    // Format ulang saat keluar kotak (blur)
+    // Trik: Format rapi hanya saat kursor keluar (Blur)
     [ctInput, idrInput].forEach(input => {
         input.addEventListener('blur', (e) => {
             let num = toPureNumber(e.target.value);
-            e.target.value = toIndoFormat(num);
+            if (num > 0) {
+                e.target.value = num.toLocaleString('id-ID', { 
+                    minimumFractionDigits: 2, 
+                    maximumFractionDigits: 2 
+                });
+            }
+        });
+        
+        // Saat diklik lagi, bersihkan format buat edit gampang
+        input.addEventListener('focus', (e) => {
+            let num = toPureNumber(e.target.value);
+            if (num > 0) {
+                e.target.value = num.toString().replace('.', ',');
+            }
         });
     });
-
-    // Inisialisasi awal (jika tidak diatur di HTML)
-    // updateValue(ctInput, 3289);
-    // updateValue(idrInput, 1000);
 });
