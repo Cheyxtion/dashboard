@@ -92,7 +92,7 @@ leaderboardMenu.addEventListener('show.bs.offcanvas', async () => {
     
     try {
         // Panggil API yang kita buat tadi
-        const response = await fetch('https://https://bottai.onrender.com/api/leaderboard');
+        const response = await fetch('https://nama-service-kamu.onrender.com/api/leaderboard');
         const data = await response.json();
 
         listContainer.innerHTML = data.map((user, index) => `
