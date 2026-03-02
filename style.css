@@ -265,3 +265,38 @@ main {
     transform: translateY(-2px);
     display: inline-block;
 }
+
+/* Navbar Fixes */
+.navbar-brand {
+    letter-spacing: -1px;
+}
+
+.nav-link {
+    color: #444 !important;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--discord-color) !important;
+}
+
+/* KHUSUS MOBILE MENU (Dropdown Melayang) */
+@media (max-width: 991px) {
+    .navbar-collapse {
+        background: white;
+        position: absolute; /* Menu melayang di atas card */
+        top: 70px;
+        left: 0;
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        border-bottom: 3px solid var(--discord-color);
+        z-index: 9999;
+    }
+    
+    .nav-item {
+        text-align: center;
+        padding: 10px 0;
+    }
+}
