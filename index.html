@@ -11,16 +11,51 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold text-dark" href="#">Chey<span class="text-primary-custom">Kurs</span></a>
-            <div class="ms-auto">
-                <a href="https://discord.gg/d6jpzYsjcq" target="_blank" class="btn btn-discord d-flex align-items-center">
-                    <i class="fab fa-discord me-2"></i> Discord
-                </a>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-white bg-white shadow-sm sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold text-dark" href="#">Chey<span class="text-primary-custom">Kurs</span></a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Home</a>
+                </li>
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Help
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end border-0 shadow rounded-3 p-3" aria-labelledby="helpDropdown" style="min-width: 250px;">
+                        <li><h6 class="dropdown-header px-0 text-dark fw-bold">Bot Commands</h6></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li class="mb-2">
+                            <code class="text-primary small">/cek</code> 
+                            <span class="d-block text-muted" style="font-size: 0.75rem;">Cek kurs CT terbaru secara real-time.</span>
+                        </li>
+                        <li class="mb-2">
+                            <code class="text-primary small">/tukar [jumlah]</code> 
+                            <span class="d-block text-muted" style="font-size: 0.75rem;">Simulasi penukaran CT ke IDR.</span>
+                        </li>
+                        <li class="mb-0">
+                            <code class="text-primary small">/help</code> 
+                            <span class="d-block text-muted" style="font-size: 0.75rem;">Bantuan daftar perintah lengkap.</span>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                    <a href="https://discord.gg/d6jpzYsjcq" target="_blank" class="btn btn-discord d-flex align-items-center">
+                        <i class="fab fa-discord me-2"></i> Discord
+                    </a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <main class="container-fluid py-5">
         <div class="row justify-content-center align-items-center min-vh-75 py-2">
