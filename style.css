@@ -196,3 +196,72 @@ main {
 main {
     animation: fadeIn 0.8s ease-out;
 }
+
+/* Footer Pro Styling */
+.footer-compact {
+    background-color: #1a1c1e;
+    padding: 25px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.status-dot {
+    height: 8px;
+    width: 8px;
+    background-color: #2ecc71; /* Warna Hijau Online */
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+    box-shadow: 0 0 8px #2ecc71;
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(46, 204, 113, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+}
+
+.status-text {
+    font-size: 0.7rem;
+    color: #9da3af;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.copyright-text, .powered-by {
+    font-size: 0.75rem;
+    color: #636e72;
+}
+
+.footer-nav a {
+    color: #dbdee1;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.footer-nav a:hover {
+    color: var(--discord-color);
+}
+
+.separator {
+    color: #444;
+    margin: 0 8px;
+}
+
+.social-icons-pro a {
+    color: #ffffff;
+    font-size: 1.1rem;
+    margin-left: 15px;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+
+.social-icons-pro a:hover {
+    opacity: 1;
+    color: var(--discord-color);
+    transform: translateY(-2px);
+    display: inline-block;
+}
