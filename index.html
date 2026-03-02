@@ -6,155 +6,60 @@
     <title>CheyKurs | Konverter CT</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --discord-color: #5865F2; }
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        
-        /* Navbar Styling */
-        .navbar { background: white; border-bottom: 1px solid #eee; padding: 12px 0; }
-        .navbar-brand { font-size: 1.5rem; letter-spacing: -0.5px; }
-        .text-primary-custom { color: #5865F2 !important; }
-        .btn-discord { 
-            background-color: var(--discord-color); 
-            color: white; 
-            border-radius: 8px; 
-            padding: 8px 18px;
-            font-weight: 500;
-            border: none;
-            transition: 0.3s;
-        }
-        .btn-discord:hover { background-color: #4752c4; color: white; }
-
-        /* Card Styling */
-        .converter-card {
-            border: none;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-            max-width: 480px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-        .input-group-text { background: white; border-right: none; color: #999; font-weight: 500; }
-        .form-control { border-left: none; font-size: 1.8rem; font-weight: 500; padding: 10px; }
-        .form-control:focus { box-shadow: none; border-color: #dee2e6; }
-        .label-text { color: #666; font-weight: 600; font-size: 0.85rem; margin-bottom: 8px; }
-        
-        .arrow-icon { color: #ccc; margin: 15px 0; font-size: 1.2rem; }
-
-        /* Info Box */
-        .alert-custom {
-            background-color: #e0f7fa;
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 25px;
-            border: none;
-            display: flex;
-            align-items: center;
-        }
-        .info-icon { background: #00bcd4; color: white; border-radius: 50%; width: 24px; height: 24px; 
-                     display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 12px; flex-shrink: 0; }
-        .info-text strong { color: #007c91; font-size: 0.95rem; }
-        .info-text p { color: #555; font-size: 0.75rem; margin: 0; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <nav class="navbar sticky-top">
-        <div class="container d-flex justify-content-between align-items-center">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container-fluid">
             <a class="navbar-brand fw-bold text-dark" href="#">Chey<span class="text-primary-custom">Kurs</span></a>
-            <a href="https://discord.gg/d6jpzYsjcq" target="_blank" class="btn btn-discord d-flex align-items-center">
-                <i class="fab fa-discord me-2"></i> Discord
-            </a>
+            <div class="ms-auto">
+                <a href="https://discord.gg/d6jpzYsjcq" target="_blank" class="btn btn-discord d-flex align-items-center">
+                    <i class="fab fa-discord me-2"></i> Discord
+                </a>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
-        <div class="card converter-card">
-            <div class="text-center mb-4">
-                <h2 class="fw-bold h4 mb-1">Konverter CT</h2>
-                <p class="text-muted small">Presisi tinggi untuk nilai tukar pasar.</p>
-            </div>
+    <main class="container-fluid py-5">
+        <div class="row justify-content-center align-items-center min-vh-75 py-2">
+            <div class="col-md-8 col-lg-5 col-xl-4 col-xxl-3">
+                <div class="card converter-card">
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold h4 mb-1">Konverter CT</h2>
+                        <p class="text-muted small">Presisi tinggi untuk nilai tukar pasar.</p>
+                    </div>
 
-            <div class="mb-2">
-                <label class="label-text">Jumlah CT</label>
-                <div class="input-group">
-                    <span class="input-group-text">CT</span>
-                    <input type="text" id="ct-input" class="form-control" placeholder="0,00">
-                </div>
-            </div>
+                    <div class="mb-3">
+                        <label class="label-text">Jumlah CT</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white">CT</span>
+                            <input type="text" id="ct-input" class="form-control" placeholder="0,00" value="3.289,00">
+                        </div>
+                    </div>
 
-            <div class="text-center arrow-icon">
-                <i class="fas fa-arrow-down"></i>
-            </div>
+                    <div class="text-center arrow-icon my-2">
+                        <i class="fas fa-arrow-down fa-lg"></i>
+                    </div>
 
-            <div class="mb-2">
-                <label class="label-text">Estimasi Rupiah (IDR)</label>
-                <div class="input-group">
-                    <span class="input-group-text">Rp</span>
-                    <input type="text" id="idr-input" class="form-control" placeholder="0,00">
-                </div>
-            </div>
+                    <div class="mb-3">
+                        <label class="label-text">Estimasi Rupiah (IDR)</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white">Rp</span>
+                            <input type="text" id="idr-input" class="form-control" placeholder="0,00" value="1.000,00">
+                        </div>
+                    </div>
 
-            <div class="alert-custom">
-                <div class="info-icon"><i class="fas fa-info"></i></div>
-                <div class="info-text">
-                    <strong>3.289 CT = Rp 1.000,00</strong>
-                    <p>*Patokan kurs tetap pasar hari ini.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+                    <div class="alert-custom d-flex align-items-center mt-3">
+                        <div class="info-icon"><i class="fas fa-info"></i></div>
+                        <div class="info-text">
+                            <strong>3.289 CT = Rp 1.000,00</strong>
+                            <p>*Patokan kurs tetap pasar hari ini.</p>
+                        </div>
+                    </div>
+                </div> </div> </div> </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const ctInput = document.getElementById('ct-input');
-            const idrInput = document.getElementById('idr-input');
-            const CT_BASE = 3289;
-            const IDR_BASE = 1000;
-
-            // Fungsi format ke Indo 1.000,00
-            function toIndoFormat(num) {
-                return num.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            }
-
-            // Fungsi ambil angka murni dari string format Indo
-            function toPureNumber(str) {
-                return parseFloat(str.replace(/\./g, '').replace(',', '.')) || 0;
-            }
-
-            // Fungsi pasang ke input tanpa ribet
-            function updateValue(input, value) {
-                input.value = toIndoFormat(value);
-            }
-
-            // Event saat mengetik di CT
-            ctInput.addEventListener('input', (e) => {
-                let val = e.target.value.replace(/[^0-9,]/g, ''); // Hanya angka dan koma
-                let num = toPureNumber(val);
-                let result = (num / CT_BASE) * IDR_BASE;
-                idrInput.value = toIndoFormat(result);
-            });
-
-            // Event saat mengetik di IDR
-            idrInput.addEventListener('input', (e) => {
-                let val = e.target.value.replace(/[^0-9,]/g, '');
-                let num = toPureNumber(val);
-                let result = (num / IDR_BASE) * CT_BASE;
-                ctInput.value = toIndoFormat(result);
-            });
-
-            // Format ulang saat keluar kotak (biar rapi ada titiknya)
-            [ctInput, idrInput].forEach(input => {
-                input.addEventListener('blur', (e) => {
-                    let num = toPureNumber(e.target.value);
-                    e.target.value = toIndoFormat(num);
-                });
-            });
-
-            // Nilai Awal (Sesuai Gambar Kamu)
-            updateValue(ctInput, 3289);
-            updateValue(idrInput, 1000);
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
