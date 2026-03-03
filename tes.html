@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARDXTION ULTIMATE - V2 ENGINE</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;600;700;800;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --bg-deep: #0a0a0a;
+            --panel-hex: #151515;
+            --input-focus: #2a2a2a;
+            --text-main: #f0f0f0;
+            --grad-common: linear-gradient(135deg, #a0a0a0, #707070);
+            --grad-uncommon: linear-gradient(135deg, #2ecc71, #27ae60);
+            --grad-rare: linear-gradient(135deg, #3498db, #2980b9);
+            --grad-ultra: linear-gradient(45deg, #ffd700, #fff, #ffd700, #ff8c00);
+            --grad-mythic: linear-gradient(45deg, #ff0000, #833ab4, #ff0000);
+        }
+
+        * { box-sizing: border-box; outline: none; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+
+        body {
+            background: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR STYLE (TIDAK BERUBAH) --- */
+        .sidebar { width: 500px; background: var(--panel-hex); display: flex; flex-direction: column; border-right: 1px solid #222; z-index: 1000; box-shadow: 15px 0 50px rgba(0,0,0,0.7); }
+        .sidebar-brand { padding: 25px; background: #000; border-bottom: 3px solid var(--primary); text-align: center; }
+        .sidebar-brand h1 { font-family: 'Bebas Neue'; font-size: 32px; margin: 0; letter-spacing: 5px; background: linear-gradient(to right, #00f2ff, #ffffff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .tabs-container { display: grid; grid-template-columns: repeat(5, 1fr); background: #000; }
+        .tab-trigger { padding: 15px 5px; border: none; background: transparent; color: #555; font-size: 10px; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.3s; border-bottom: 2px solid transparent; }
+        .tab-trigger.active { color: var(--primary); background: #111; border-bottom: 2px solid var(--primary); }
+        .sidebar-scroll { flex-grow: 1; overflow-y: auto; padding: 25px; }
+        .pane { display: none; animation: fadeIn 0.4s ease; }
+        .pane.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .section-title { font-size: 11px; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; margin: 20px 0 15px 0; display: flex; align-items: center; gap: 10px; }
+        .section-title::after { content: ""; flex-grow: 1; height: 1px; background: #333; }
+        .field { margin-bottom: 15px; }
+        .field label { display: block; font-size: 10px; font-weight: 700; color: #888; margin-bottom: 8px; }
+        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 12px 15px; background: #0e0e0e; border: 1px solid #333; color: #fff; border-radius: 6px; font-family: 'Montserrat'; font-size: 13px; }
+        .dual-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .switch { position: relative; display: inline-block; width: 34px; height: 18px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; inset: 0; background-color: #333; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 12px; width: 12px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(16px); }
+        .range-group { margin-bottom: 20px; }
+        .range-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .range-header span { font-size: 10px; font-weight: 800; color: #666; }
+        input[type="range"] { width: 100%; height: 4px; background: #333; border-radius: 2px; appearance: none; }
+        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 16px; height: 16px; background: var(--primary); border-radius: 50%; cursor: pointer; }
+        .export-btn { width: 100%; padding: 18px; background: var(--primary); color: #000; border: none; border-radius: 8px; font-family: 'Oswald'; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .export-btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+        /* --- PREVIEW STAGE --- */
+        .stage { flex-grow: 1; background: #050505; display: flex; align-items: center; justify-content: center; perspective: 1000px; }
+        #cardWrapper { width: 440px; height: 615px; position: relative; background: #ffcb05; border-radius: 30px; padding: 4%; box-sizing: border-box; box-shadow: 0 30px 60px rgba(0,0,0,0.8); transition: 0.3s; }
+        .hollow-texture { position: absolute; inset: 0; background-image: url('https://www.transparenttextures.com/patterns/brushed-alum.png'); opacity: 0.2; mix-blend-mode: overlay; pointer-events: none; display: none; }
+        .card-body { width: 100%; height: 100%; background: #fff; border-radius: 15px; position: relative; display: flex; flex-direction: column; padding: 15px; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); z-index: 5; }
+
+        /* --- CSS BARU: Gaya Rarity Badge ala NEW UI (Pill Shape + Glow) --- */
+        #vRarity {
+            font-family: 'Oswald';
+            font-size: 8px; /* Ukuran NEW UI */
+            font-weight: 700;
+            color: #fff;
+            padding: 3px 12px; /* NEW UI Padding */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            
+            /* Bentuk Pill Shape */
+            border-radius: 20px; 
+            
+            /* Teks Miring */
+            transform: skew(-10deg); 
+            
+            /* Posisi Absolut: Tengah-Bawah presisi */
+            position: absolute;
+            bottom: 25px; /* Tinggi dari area footer */
+            left: 50%;
+            /* Harus transform skew dan translate berbarengan di satu baris */
+            transform: translateX(-50%) skew(-10deg); 
+            
+            z-index: 100;
+            border: 1px solid rgba(255,255,255,0.4);
+            white-space: nowrap;
+            transition: 0.2s ease;
+            
+            /* Efek Glow & Shadow NEW UI: Dimatikan default, akan dinyalakan lewat JS */
+            box-shadow: 0 0 0 transparent; 
+        }
+
+        /* --- CSS SISA --- */
+        .header-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px; }
+        .stage-info { font-size: 10px; font-weight: 800; color: #444; font-style: italic; }
+        .header-main { display: flex; align-items: center; border-bottom: 3px solid #222; padding-bottom: 5px; gap: 10px; }
+        .name-display { font-family: 'Bebas Neue'; font-size: 32px; color: #111; flex-grow: 1; letter-spacing: 1px; }
+        .hp-display { display: flex; align-items: baseline; gap: 2px; }
+        .hp-prefix { font-size: 11px; font-weight: 900; color: #cc0000; }
+        .hp-value { font-family: 'Oswald'; font-size: 26px; font-weight: 700; color: #cc0000; }
+        .type-orb { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); box-shadow: 0 3px 6px rgba(0,0,0,0.2); }
+        .art-viewport { width: 100%; height: 240px; margin: 10px 0; border: 6px solid #d1d1d1; background: #1a1a1a; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        #artImg { width: 100%; height: 100%; object-fit: cover; }
+        .art-meta { font-size: 8px; text-align: center; color: #555; font-weight: 700; margin-top: -5px; }
+        .content-stack { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 10px; margin-top: 10px; }
+        .ability-box { background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.08); border-left: 5px solid #e52d2d; padding: 8px; border-radius: 6px; }
+        .ability-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+        .ability-label { background: #e52d2d; color: #fff; font-size: 9px; font-weight: 900; padding: 2px 8px; border-radius: 3px; }
+        .ability-title { font-family: 'Bebas Neue'; font-size: 19px; color: #c00; }
+        .ability-text { font-size: 11px; color: #333; line-height: 1.3; }
+        .attack-row { display: flex; align-items: flex-start; gap: 12px; padding: 5px 0; }
+        .atk-costs { display: flex; gap: 4px; min-width: 55px; padding-top: 4px; }
+        .atk-info { flex-grow: 1; }
+        .atk-name { font-family: 'Bebas Neue'; font-size: 22px; color: #111; line-height: 1; }
+        .atk-desc { font-size: 10px; color: #555; display: block; margin-top: 2px; }
+        .atk-dmg { font-family: 'Bebas Neue'; font-size: 28px; color: #111; min-width: 50px; text-align: right; }
+
+        /* --- CSS FOOTER: Harus Relative agar Rarity Badge menempel di tengahnya --- */
+        .footer-system {
+            margin-top: auto;
+            border-top: 1px solid #ddd;
+            padding-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 9px;
+            font-weight: 800;
+            color: #777;
+            position: relative; /* Penting! */
+        }
+        .copy-info { font-size: 7px; color: #aaa; margin-top: 2px; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-brand"><h1>CARDXTION ULTIMATE</h1></div>
+        <nav class="tabs-container">
+            <button class="tab-trigger active" onclick="switchPane(event, 'pane-1')"><i class="fa-solid fa-id-card"></i></button>
+            <button class="tab-trigger" onclick="switchPane(event, 'pane-2')"><i class="fa-solid fa-image"></i></button>
+            <button class="tab-trigger" onclick="switchPane(event, 'pane-3')"><i class="fa-solid fa-bolt"></i></button>
+            <button class="tab-trigger" onclick="switchPane(event, 'pane-4')"><i class="fa-solid fa-star"></i></button>
+            <button class="tab-trigger" onclick="switchPane(event, 'pane-5')"><i class="fa-solid fa-gears"></i></button>
+        </nav>
+        <div class="sidebar-scroll">
+            <div id="pane-1" class="pane active">
+                <div class="section-title">Core Identity</div>
+                <div class="field"><label>Character Name</label><input type="text" id="inName" value="ZEPHYRUS EX" oninput="runEngine()"></div>
+                <div class="dual-fields">
+                    <div class="field"><label>Evolution Stage</label><input type="text" id="inStage" value="Stage 3 Ultimate" oninput="runEngine()"></div>
+                    <div class="field"><label>HP Value</label><input type="number" id="inHP" value="350" oninput="runEngine()"></div>
+                </div>
+                <div class="field">
+                    <label>Elemental Type</label>
+                    <select id="inType" onchange="runEngine()">
+                        <option value="fire">Fire Force</option>
+                        <option value="water">Water Source</option>
+                        <option value="grass">Nature Soul</option>
+                        <option value="electric">Thunder Volt</option>
+                        <option value="dark">Void Shadow</option>
+                        <option value="mythic">Aether Myth</option>
+                    </select>
+                </div>
+            </div>
+            <div id="pane-2" class="pane">
+                <div class="section-title">Visual Layout</div>
+                <div class="field"><label>Upload Card Art</label><input type="file" accept="image/*" onchange="handleArt(event)"></div>
+                <div class="range-group"><div class="range-header"><label>Master Border Thickness</label><span id="val-b-w">4%</span></div><input type="range" id="inBorderW" min="1" max="12" value="4" oninput="runEngine()"></div>
+                <div class="range-group"><div class="range-header"><label>Card Corner Radius</label><span id="val-b-r">30px</span></div><input type="range" id="inBorderR" min="0" max="60" value="30" oninput="runEngine()"></div>
+                <div class="field"><label>Custom Border Color</label><input type="color" id="inBorderCol" value="#ffcb05" oninput="runEngine()"></div>
+                <div class="field"><label>Art Frame Info</label><input type="text" id="inCap" value="NO. 777 God Pokémon HT: 21'04 WT: 880 lbs" oninput="runEngine()"></div>
+            </div>
+            <div id="pane-3" class="pane">
+                <div class="section-title">Combat Skills</div>
+                <div style="background: #111; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                    <div style="display:flex; justify-content:space-between;"><label style="color:var(--primary); font-size: 10px; font-weight: 900;">ABILITY</label><label class="switch"><input type="checkbox" id="togAb" checked onchange="runEngine()"><span class="slider"></span></label></div>
+                    <input type="text" id="inAbName" value="Eternal Gale" oninput="runEngine()" style="margin: 5px 0;">
+                    <textarea id="inAbDesc" rows="2" oninput="runEngine()">Prevent all effects...</textarea>
+                </div>
+                <div style="background: #111; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                    <div style="display:flex; justify-content:space-between;"><label style="color:var(--primary); font-size: 10px; font-weight: 900;">PRIMARY ATTACK</label><label class="switch"><input type="checkbox" id="togAtk1" checked onchange="runEngine()"><span class="slider"></span></label></div>
+                    <div class="dual-fields" style="margin: 5px 0;"><input type="text" id="inAtkName" value="Sky Shredder" oninput="runEngine()"><input type="text" id="inAtkDmg" value="180+" oninput="runEngine()"></div>
+                    <input type="text" id="inAtkCost" value="fire,electric" oninput="runEngine()" placeholder="e.g: fire,water">
+                    <textarea id="inAtkDesc" rows="2" oninput="runEngine()">This attack does...</textarea>
+                </div>
+                <div style="background: #111; padding: 12px; border-radius: 8px;">
+                    <div style="display:flex; justify-content:space-between;"><label style="color:var(--primary); font-size: 10px; font-weight: 900;">SECONDARY ATTACK</label><label class="switch"><input type="checkbox" id="togAtk2" onchange="runEngine()"><span class="slider"></span></label></div>
+                    <div class="dual-fields" style="margin: 5px 0;"><input type="text" id="inAtk2Name" value="Nova Blast" oninput="runEngine()"><input type="text" id="inAtk2Dmg" value="250" oninput="runEngine()"></div>
+                    <input type="text" id="inAtk2Cost" value="fire,fire,dark" oninput="runEngine()" placeholder="Costs..."><textarea id="inAtk2Desc" rows="2" oninput="runEngine()">Discard all...</textarea>
+                </div>
+            </div>
+            <div id="pane-4" class="pane">
+                <div class="section-title">Rarity & Badges</div>
+                <div class="field">
+                    <label>Choose Tier</label>
+                    <select id="inRarity" onchange="runEngine()">
+                        <option value="COMMON">Common (Classic)</option>
+                        <option value="UNCOMMON">Uncommon (Blue Steel)</option>
+                        <option value="RARE">Rare (Gold Rush)</option>
+                        <option value="ULTRA RARE">Ultra Rare (Hollow Prism)</option>
+                        <option value="MYTHIC">Mythic (Relic God)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Market Symbol</label>
+                    <select id="inSymbol" onchange="runEngine()">
+                        <option value="fa-circle-dollar-to-slot">Cheap ($)</option>
+                        <option value="fa-gem" selected>Premium ($$)</option>
+                        <option value="fa-crown">Expensive ($$$)</option>
+                        <option value="fa-skull-crossbones">Forbidden</option>
+                    </select>
+                </div>
+                <div class="field"><label>Illustrator Name</label><input type="text" id="inAuth" value="KODAI SHIMIZU" oninput="runEngine()"></div>
+                <div class="field"><label>Copyright Text</label><input type="text" id="inCopy" value="©2026 CARDXTION ULTIMATE LABS" oninput="runEngine()"></div>
+                <div class="field"><label>Serial / Collection #</label><input type="text" id="inSerial" value="999/999" oninput="runEngine()"></div>
+            </div>
+            <div id="pane-5" class="pane"><div class="section-title">Engine Settings</div><div class="field"><label>Export Resolution</label><select id="inRes"><option value="2">Standard (2x)</option><option value="3">High Definition (3x)</option><option value="5">Ultra 4K (5x)</option></select></div><button class="export-btn" onclick="exportFinal()">💾 GENERATE IMAGE</button></div>
+        </div>
+    </div>
+
+    <div class="stage">
+        <div id="cardWrapper">
+            <div class="hollow-texture" id="vHollow"></div>
+            
+            <div class="card-body" id="vBody">
+                <div class="header-top">
+                    <span class="stage-info" id="vStage">Stage 3 Ultimate</span>
+                </div>
+                <div class="header-main">
+                    <div class="name-display" id="vName">ZEPHYRUS EX</div>
+                    <div class="hp-display"><span class="hp-prefix">HP</span><span class="hp-value" id="vHP">350</span></div>
+                    <div class="type-orb" id="vTypeOrb"><i class="fa-solid fa-fire"></i></div>
+                </div>
+                <div class="art-viewport">
+                    <img id="artImg" src="https://via.placeholder.com/500x400/1a1a1a/333?text=NO+IMAGE+LOADED">
+                </div>
+                <div class="art-meta" id="vCap">NO. 777 God Pokémon HT: 21'04 WT: 880 lbs</div>
+                <div class="content-stack">
+                    <div class="ability-box" id="vAbBox">
+                        <div class="ability-head"><span class="ability-label">Ability</span><span class="ability-title" id="vAbName">Eternal Gale</span></div>
+                        <div class="ability-text" id="vAbDesc">Description...</div>
+                    </div>
+                    <div class="attack-row" id="vAtk1Row">
+                        <div class="atk-costs" id="vAtkCost"></div>
+                        <div class="atk-info"><div class="atk-name" id="vAtkName">Sky Shredder</div><span class="atk-desc" id="vAtkDesc">Attack desc...</span></div>
+                        <div class="atk-dmg" id="vAtkDmg">180+</div>
+                    </div>
+                    <div class="attack-row" id="vAtk2Row" style="display:none;">
+                        <div class="atk-costs" id="vAtk2Cost"></div>
+                        <div class="atk-info"><div class="atk-name" id="vAtk2Name">Nova Blast</div><span class="atk-desc" id="vAtk2Desc">Discard all...</span></div>
+                        <div class="atk-dmg" id="vAtk2Dmg">250</div>
+                    </div>
+                </div>
+
+                <div class="footer-system">
+                    <div>
+                        <div id="vAuth">Illus. KODAI SHIMIZU</div>
+                        <div class="copy-info" id="vCopy">©2026 CARDXTION ULTIMATE LABS</div>
+                    </div>
+                    
+                    <div id="vRarity">COMMON</div>
+
+                    <div style="display:flex; align-items:center; gap:5px;">
+                        <div id="vSerial">999/999</div>
+                        <i id="vSymbol" class="fa-solid fa-gem"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const TYPES = { fire: { col: '#e52d2d', icon: 'fa-fire' }, water: { col: '#2d89e5', icon: 'fa-droplet' }, grass: { col: '#5ba339', icon: 'fa-leaf' }, electric: { col: '#f1c40f', icon: 'fa-bolt-lightning' }, dark: { col: '#2c3e50', icon: 'fa-moon' }, mythic: { col: '#8e44ad', icon: 'fa-wand-magic-sparkles' } };
+        const RARITIES = { 'COMMON': { grad: 'var(--grad-common)', hollow: false }, 'UNCOMMON': { grad: 'var(--grad-uncommon)', hollow: false }, 'RARE': { grad: 'var(--grad-rare)', hollow: false }, 'ULTRA RARE': { grad: 'var(--grad-ultra)', hollow: true }, 'MYTHIC': { grad: 'var(--grad-mythic)', hollow: true } };
+        function switchPane(e, id) { document.querySelectorAll('.pane').forEach(p => p.classList.remove('active')); document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
+
+        function runEngine() {
+            // Core Identity
+            document.getElementById('vName').innerText = document.getElementById('inName').value;
+            document.getElementById('vHP').innerText = document.getElementById('inHP').value;
+            document.getElementById('vStage').innerText = document.getElementById('inStage').value;
+            document.getElementById('vCap').innerText = document.getElementById('inCap').value;
+            document.getElementById('vAuth').innerText = "Illus. " + document.getElementById('inAuth').value;
+            document.getElementById('vCopy').innerText = document.getElementById('inCopy').value;
+            document.getElementById('vSerial').innerText = document.getElementById('inSerial').value;
+
+            // Visual Settings
+            const bW = document.getElementById('inBorderW').value;
+            const bR = document.getElementById('inBorderR').value;
+            const bC = document.getElementById('inBorderCol').value;
+            const wrap = document.getElementById('cardWrapper');
+            wrap.style.padding = bW + "%"; wrap.style.borderRadius = bR + "px";
+            document.getElementById('val-b-w').innerText = bW + "%"; document.getElementById('val-b-r').innerText = bR + "px";
+
+            // --- UPDATE JAVASCRIPT LOGIC AGAR DESAIN BARU CENTER ---
+            const rarity = document.getElementById('inRarity').value;
+            const rData = RARITIES[rarity];
+            const vRar = document.getElementById('vRarity');
+            const vHol = document.getElementById('vHollow');
+
+            vRar.innerText = rarity;
+            vRar.style.background = rData.grad;
+            
+            // Logika Glow NEW UI: Kalau tier Ultra/Mythic pakai glow emas terang, kalau biasa pakai shadow soft hitam
+            const shadowColor = rData.hollow ? 'rgba(255, 215, 0, 0.4)' : 'rgba(0,0,0,0.3)';
+            vRar.style.boxShadow = `0 4px 15px ${shadowColor}`;
+
+            // Reset effects first
+            wrap.classList.remove('shining-effect'); vRar.classList.remove('shining-effect');
+            if(rData.hollow) { wrap.style.background = rData.grad; wrap.classList.add('shining-effect'); vRar.classList.add('shining-effect'); vHol.style.display = "block"; } else { wrap.style.background = bC; vHol.style.display = "none"; }
+            const symbol = document.getElementById('inSymbol').value; document.getElementById('vSymbol').className = `fa-solid ${symbol}`;
+            const type = document.getElementById('inType').value; const tData = TYPES[type]; const orb = document.getElementById('vTypeOrb'); orb.innerHTML = `<i class="fa-solid ${tData.icon}"></i>`; orb.style.background = tData.col; if(vBody) { vBody.className = "card-body " + type + "-tint"; }
+
+            // Visibility Toggle (Ability & Attacks)
+            document.getElementById('vAbBox').style.display = document.getElementById('togAb').checked ? "block" : "none"; document.getElementById('vAtk1Row').style.display = document.getElementById('togAtk1').checked ? "flex" : "none"; document.getElementById('vAtk2Row').style.display = document.getElementById('togAtk2').checked ? "flex" : "none";
+            document.getElementById('vAbName').innerText = document.getElementById('inAbName').value; document.getElementById('vAbDesc').innerText = document.getElementById('inAbDesc').value; document.getElementById('vAtkName').innerText = document.getElementById('inAtkName').value; document.getElementById('vAtkDesc').innerText = document.getElementById('inAtkDesc').value; document.getElementById('vAtkDmg').innerText = document.getElementById('inAtkDmg').value; document.getElementById('vAtk2Name').innerText = document.getElementById('inAtk2Name').value; document.getElementById('vAtk2Desc').innerText = document.getElementById('inAtk2Desc').value; document.getElementById('vAtk2Dmg').innerText = document.getElementById('inAtk2Dmg').value;
+            renderCosts('inAtkCost', 'vAtkCost'); renderCosts('inAtk2Cost', 'vAtk2Cost');
+        }
+
+        function renderCosts(inputId, outputId) { const costs = document.getElementById(inputId).value.split(','); const cBox = document.getElementById(outputId); cBox.innerHTML = ''; costs.forEach(c => { const key = c.trim().toLowerCase(); if(TYPES[key]) { cBox.innerHTML += `<div style="width:14px; height:14px; border-radius:50%; background:${TYPES[key].col}; display:flex; align-items:center; justify-content:center; font-size:8px; color:#fff; border:1px solid rgba(255,255,255,0.4)"><i class="fa-solid ${TYPES[key].icon}"></i></div>`; } }); }
+        function handleArt(e) { const reader = new FileReader(); reader.onload = () => document.getElementById('artImg').src = reader.result; reader.readAsDataURL(e.target.files[0]); }
+        function exportFinal() { const btn = document.querySelector('.export-btn'); btn.innerText = "PROCESSING..."; btn.disabled = true; html2canvas(document.getElementById('cardWrapper'), { scale: document.getElementById('inRes').value, useCORS: true, backgroundColor: null, }).then(canvas => { const link = document.createElement('a'); link.download = `CARDXTION_${Date.now()}.png`; link.href = canvas.toDataURL("image/png"); link.click(); btn.innerText = "💾 GENERATE IMAGE"; btn.disabled = false; }); }
+        runEngine();
+    </script>
+</body>
+</html>
