@@ -71,42 +71,63 @@
         .stage { flex-grow: 1; background: #050505; display: flex; align-items: center; justify-content: center; perspective: 1000px; }
         #cardWrapper { width: 440px; height: 615px; position: relative; background: #ffcb05; border-radius: 30px; padding: 4%; box-sizing: border-box; box-shadow: 0 30px 60px rgba(0,0,0,0.8); transition: 0.3s; }
         .hollow-texture { position: absolute; inset: 0; background-image: url('https://www.transparenttextures.com/patterns/brushed-alum.png'); opacity: 0.2; mix-blend-mode: overlay; pointer-events: none; display: none; }
-        .card-body { width: 100%; height: 100%; background: #fff; border-radius: 15px; position: relative; display: flex; flex-direction: column; padding: 15px; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.1); z-index: 5; }
+        .card-body { 
+            width: 100%; 
+            height: 100%; 
+            border-radius: 15px; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            padding: 15px; 
+            overflow: hidden; 
+            z-index: 5;
+            
+            /* Tambahkan efek kilau statis agar terlihat metalik */
+            background-image: linear-gradient(
+                110deg, 
+                rgba(255,255,255,0.4) 0%, 
+                rgba(255,255,255,0) 20%, 
+                rgba(255,255,255,0.4) 40%, 
+                rgba(255,255,255,0) 60%
+            );
+            background-size: 200% 100%;
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.1);
+        }
 
-        /* --- CSS BARU: Gaya Rarity Badge ala NEW UI (Pill Shape + Glow) --- */
+        #vBody { background-color: #fff; transition: background 0.4s ease; }
+
+        /* --- CSS UPDATE: Rarity Badge di Header --- */
         #vRarity {
             font-family: 'Oswald';
-            font-size: 8px; /* Ukuran NEW UI */
+            font-size: 9px;
             font-weight: 700;
             color: #fff;
-            padding: 3px 12px; /* NEW UI Padding */
+            padding: 2px 12px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             
-            /* Bentuk Pill Shape */
-            border-radius: 20px; 
+            /* Bentuk Kotak Tegas */
+            border-radius: 2px; 
             
-            /* Teks Miring */
-            transform: skew(-10deg); 
+            /* Kemiringan miring ke kanan */
+            transform: skew(-15deg); 
             
-            /* Posisi Absolut: Tengah-Bawah presisi */
-            position: absolute;
-            bottom: 25px; /* Tinggi dari area footer */
-            left: 50%;
-            /* Harus transform skew dan translate berbarengan di satu baris */
-            transform: translateX(-50%) skew(-10deg); 
-            
-            z-index: 100;
+            display: inline-block;
             border: 1px solid rgba(255,255,255,0.4);
-            white-space: nowrap;
-            transition: 0.2s ease;
-            
-            /* Efek Glow & Shadow NEW UI: Dimatikan default, akan dinyalakan lewat JS */
-            box-shadow: 0 0 0 transparent; 
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+            transition: 0.3s ease;
         }
 
         /* --- CSS SISA --- */
-        .header-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px; }
+        /* Memastikan container header-top bisa menampung keduanya */
+        .header-top { 
+            display: flex; 
+            justify-content: space-between; /* Ini kuncinya buat dorong ke ujung */
+            align-items: center; 
+            margin-bottom: 5px;
+            width: 100%;
+        }
         .stage-info { font-size: 10px; font-weight: 800; color: #444; font-style: italic; }
         .header-main { display: flex; align-items: center; border-bottom: 3px solid #222; padding-bottom: 5px; gap: 10px; }
         .name-display { font-family: 'Bebas Neue'; font-size: 32px; color: #111; flex-grow: 1; letter-spacing: 1px; }
@@ -240,6 +261,7 @@
             <div class="card-body" id="vBody">
                 <div class="header-top">
                     <span class="stage-info" id="vStage">Stage 3 Ultimate</span>
+                    <div id="vRarity">COMMON</div>
                 </div>
                 <div class="header-main">
                     <div class="name-display" id="vName">ZEPHYRUS EX</div>
@@ -272,8 +294,6 @@
                         <div id="vAuth">Illus. KODAI SHIMIZU</div>
                         <div class="copy-info" id="vCopy">©2026 CARDXTION ULTIMATE LABS</div>
                     </div>
-                    
-                    <div id="vRarity">COMMON</div>
 
                     <div style="display:flex; align-items:center; gap:5px;">
                         <div id="vSerial">999/999</div>
@@ -285,12 +305,32 @@
     </div>
 
     <script>
-        const TYPES = { fire: { col: '#e52d2d', icon: 'fa-fire' }, water: { col: '#2d89e5', icon: 'fa-droplet' }, grass: { col: '#5ba339', icon: 'fa-leaf' }, electric: { col: '#f1c40f', icon: 'fa-bolt-lightning' }, dark: { col: '#2c3e50', icon: 'fa-moon' }, mythic: { col: '#8e44ad', icon: 'fa-wand-magic-sparkles' } };
-        const RARITIES = { 'COMMON': { grad: 'var(--grad-common)', hollow: false }, 'UNCOMMON': { grad: 'var(--grad-uncommon)', hollow: false }, 'RARE': { grad: 'var(--grad-rare)', hollow: false }, 'ULTRA RARE': { grad: 'var(--grad-ultra)', hollow: true }, 'MYTHIC': { grad: 'var(--grad-mythic)', hollow: true } };
-        function switchPane(e, id) { document.querySelectorAll('.pane').forEach(p => p.classList.remove('active')); document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active')); document.getElementById(id).classList.add('active'); e.currentTarget.classList.add('active'); }
+        const TYPES = { 
+            fire: { col: '#e52d2d', grad: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)', icon: 'fa-fire', txt: '#111' }, 
+            water: { col: '#2d89e5', grad: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)', icon: 'fa-droplet', txt: '#111' }, 
+            grass: { col: '#5ba339', grad: 'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)', icon: 'fa-leaf', txt: '#111' }, 
+            electric: { col: '#f1c40f', grad: 'linear-gradient(135deg, #fff1eb 0%, #ace0f9 100%)', icon: 'fa-bolt-lightning', txt: '#111' }, 
+            dark: { col: '#2c3e50', grad: 'linear-gradient(135deg, #434343 0%, #000000 100%)', icon: 'fa-moon', txt: '#fff' }, 
+            mythic: { col: '#8e44ad', grad: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', icon: 'fa-wand-magic-sparkles', txt: '#fff' } 
+        };
+
+        const RARITIES = { 
+            'COMMON': { grad: 'linear-gradient(135deg, #a0a0a0, #707070)', hollow: false, shadow: 'rgba(0,0,0,0.3)' }, 
+            'UNCOMMON': { grad: 'linear-gradient(135deg, #2ecc71, #27ae60)', hollow: false, shadow: 'rgba(0,0,0,0.3)' }, 
+            'RARE': { grad: 'linear-gradient(135deg, #3498db, #2980b9)', hollow: false, shadow: 'rgba(0,0,0,0.3)' }, 
+            'ULTRA RARE': { grad: 'linear-gradient(45deg, #ffd700, #fff, #ffd700, #ff8c00)', hollow: true, shadow: 'rgba(255, 215, 0, 0.6)' }, 
+            'MYTHIC': { grad: 'linear-gradient(45deg, #ff0000, #833ab4, #ff0000)', hollow: true, shadow: 'rgba(255, 0, 0, 0.6)' } 
+        };
+
+        function switchPane(e, id) { 
+            document.querySelectorAll('.pane').forEach(p => p.classList.remove('active')); 
+            document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active')); 
+            document.getElementById(id).classList.add('active'); 
+            e.currentTarget.classList.add('active'); 
+        }
 
         function runEngine() {
-            // Core Identity
+            // 1. Core Identity
             document.getElementById('vName').innerText = document.getElementById('inName').value;
             document.getElementById('vHP').innerText = document.getElementById('inHP').value;
             document.getElementById('vStage').innerText = document.getElementById('inStage').value;
@@ -299,15 +339,17 @@
             document.getElementById('vCopy').innerText = document.getElementById('inCopy').value;
             document.getElementById('vSerial').innerText = document.getElementById('inSerial').value;
 
-            // Visual Settings
+            // 2. Visual Settings
             const bW = document.getElementById('inBorderW').value;
             const bR = document.getElementById('inBorderR').value;
             const bC = document.getElementById('inBorderCol').value;
             const wrap = document.getElementById('cardWrapper');
-            wrap.style.padding = bW + "%"; wrap.style.borderRadius = bR + "px";
-            document.getElementById('val-b-w').innerText = bW + "%"; document.getElementById('val-b-r').innerText = bR + "px";
+            wrap.style.padding = bW + "%"; 
+            wrap.style.borderRadius = bR + "px";
+            document.getElementById('val-b-w').innerText = bW + "%"; 
+            document.getElementById('val-b-r').innerText = bR + "px";
 
-            // --- UPDATE JAVASCRIPT LOGIC AGAR DESAIN BARU CENTER ---
+            // 3. Rarity Logic
             const rarity = document.getElementById('inRarity').value;
             const rData = RARITIES[rarity];
             const vRar = document.getElementById('vRarity');
@@ -315,26 +357,114 @@
 
             vRar.innerText = rarity;
             vRar.style.background = rData.grad;
+            vRar.style.transform = "skew(-15deg)";
             
-            // Logika Glow NEW UI: Kalau tier Ultra/Mythic pakai glow emas terang, kalau biasa pakai shadow soft hitam
             const shadowColor = rData.hollow ? 'rgba(255, 215, 0, 0.4)' : 'rgba(0,0,0,0.3)';
-            vRar.style.boxShadow = `0 4px 15px ${shadowColor}`;
+            vRar.style.boxShadow = `3px 3px 10px ${shadowColor}`;
 
-            // Reset effects first
-            wrap.classList.remove('shining-effect'); vRar.classList.remove('shining-effect');
-            if(rData.hollow) { wrap.style.background = rData.grad; wrap.classList.add('shining-effect'); vRar.classList.add('shining-effect'); vHol.style.display = "block"; } else { wrap.style.background = bC; vHol.style.display = "none"; }
-            const symbol = document.getElementById('inSymbol').value; document.getElementById('vSymbol').className = `fa-solid ${symbol}`;
-            const type = document.getElementById('inType').value; const tData = TYPES[type]; const orb = document.getElementById('vTypeOrb'); orb.innerHTML = `<i class="fa-solid ${tData.icon}"></i>`; orb.style.background = tData.col; if(vBody) { vBody.className = "card-body " + type + "-tint"; }
+            wrap.classList.remove('shining-effect'); 
+            if(rData.hollow) { 
+                wrap.style.background = rData.grad; 
+                wrap.classList.add('shining-effect'); 
+                vHol.style.display = "block"; 
+            } else { 
+                wrap.style.background = bC; 
+                vHol.style.display = "none"; 
+            }
 
-            // Visibility Toggle (Ability & Attacks)
-            document.getElementById('vAbBox').style.display = document.getElementById('togAb').checked ? "block" : "none"; document.getElementById('vAtk1Row').style.display = document.getElementById('togAtk1').checked ? "flex" : "none"; document.getElementById('vAtk2Row').style.display = document.getElementById('togAtk2').checked ? "flex" : "none";
-            document.getElementById('vAbName').innerText = document.getElementById('inAbName').value; document.getElementById('vAbDesc').innerText = document.getElementById('inAbDesc').value; document.getElementById('vAtkName').innerText = document.getElementById('inAtkName').value; document.getElementById('vAtkDesc').innerText = document.getElementById('inAtkDesc').value; document.getElementById('vAtkDmg').innerText = document.getElementById('inAtkDmg').value; document.getElementById('vAtk2Name').innerText = document.getElementById('inAtk2Name').value; document.getElementById('vAtk2Desc').innerText = document.getElementById('inAtk2Desc').value; document.getElementById('vAtk2Dmg').innerText = document.getElementById('inAtk2Dmg').value;
-            renderCosts('inAtkCost', 'vAtkCost'); renderCosts('inAtk2Cost', 'vAtk2Cost');
+            // 4. Element Logic & Text Color Adaptivity (TAMBAHAN DISINI)
+            const type = document.getElementById('inType').value;
+            const tData = TYPES[type];
+            const orb = document.getElementById('vTypeOrb');
+            const vBody = document.getElementById('vBody');
+
+            orb.innerHTML = `<i class="fa-solid ${tData.icon}"></i>`;
+            orb.style.background = tData.col;
+
+            vBody.style.background = tData.grad;
+            vBody.style.backgroundImage = `linear-gradient(110deg, rgba(255,255,255,0.3) 20%, rgba(255,255,255,0) 40%, rgba(255,255,255,0.3) 60%), ${tData.grad}`;
+
+            // --- LOGIKA GANTI WARNA TEKS OTOMATIS ---
+            const textElements = [
+                'vName', 'vHP', 'vStage', 'vAbName', 'vAbDesc', 
+                'vAtkName', 'vAtkDesc', 'vAtkDmg', 'vAtk2Name', 
+                'vAtk2Desc', 'vAtk2Dmg', 'vCap', 'vAuth', 'vCopy', 
+                'vSerial', 'vSymbol'
+            ];
+
+            textElements.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.style.color = tData.txt; // Gunakan warna txt dari TYPES
+            });
+
+            // Penyesuaian khusus elemen kecil agar tetap terlihat
+            const hpPrefix = document.querySelector('.hp-prefix');
+            if(hpPrefix) hpPrefix.style.color = tData.txt === '#fff' ? '#ff9a9a' : '#cc0000';
+
+            const abBox = document.getElementById('vAbBox');
+            if(abBox) {
+                abBox.style.borderColor = tData.txt === '#fff' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.1)';
+                abBox.style.background = tData.txt === '#fff' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.04)';
+            }
+            // ---------------------------------------
+
+            // 5. Combat Skills Visibility
+            document.getElementById('vAbBox').style.display = document.getElementById('togAb').checked ? "block" : "none"; 
+            document.getElementById('vAtk1Row').style.display = document.getElementById('togAtk1').checked ? "flex" : "none"; 
+            document.getElementById('vAtk2Row').style.display = document.getElementById('togAtk2').checked ? "flex" : "none";
+            
+            document.getElementById('vAbName').innerText = document.getElementById('inAbName').value; 
+            document.getElementById('vAbDesc').innerText = document.getElementById('inAbDesc').value; 
+            document.getElementById('vAtkName').innerText = document.getElementById('inAtkName').value; 
+            document.getElementById('vAtkDesc').innerText = document.getElementById('inAtkDesc').value; 
+            document.getElementById('vAtkDmg').innerText = document.getElementById('inAtkDmg').value; 
+            document.getElementById('vAtk2Name').innerText = document.getElementById('inAtk2Name').value; 
+            document.getElementById('vAtk2Desc').innerText = document.getElementById('inAtk2Desc').value; 
+            document.getElementById('vAtk2Dmg').innerText = document.getElementById('inAtk2Dmg').value;
+            
+            const symbol = document.getElementById('inSymbol').value; 
+            document.getElementById('vSymbol').className = `fa-solid ${symbol}`;
+
+            renderCosts('inAtkCost', 'vAtkCost'); 
+            renderCosts('inAtk2Cost', 'vAtk2Cost');
         }
 
-        function renderCosts(inputId, outputId) { const costs = document.getElementById(inputId).value.split(','); const cBox = document.getElementById(outputId); cBox.innerHTML = ''; costs.forEach(c => { const key = c.trim().toLowerCase(); if(TYPES[key]) { cBox.innerHTML += `<div style="width:14px; height:14px; border-radius:50%; background:${TYPES[key].col}; display:flex; align-items:center; justify-content:center; font-size:8px; color:#fff; border:1px solid rgba(255,255,255,0.4)"><i class="fa-solid ${TYPES[key].icon}"></i></div>`; } }); }
-        function handleArt(e) { const reader = new FileReader(); reader.onload = () => document.getElementById('artImg').src = reader.result; reader.readAsDataURL(e.target.files[0]); }
-        function exportFinal() { const btn = document.querySelector('.export-btn'); btn.innerText = "PROCESSING..."; btn.disabled = true; html2canvas(document.getElementById('cardWrapper'), { scale: document.getElementById('inRes').value, useCORS: true, backgroundColor: null, }).then(canvas => { const link = document.createElement('a'); link.download = `CARDXTION_${Date.now()}.png`; link.href = canvas.toDataURL("image/png"); link.click(); btn.innerText = "💾 GENERATE IMAGE"; btn.disabled = false; }); }
+        function renderCosts(inputId, outputId) { 
+            const costs = document.getElementById(inputId).value.split(','); 
+            const cBox = document.getElementById(outputId); 
+            cBox.innerHTML = ''; 
+            costs.forEach(c => { 
+                const key = c.trim().toLowerCase(); 
+                if(TYPES[key]) { 
+                    cBox.innerHTML += `<div style="width:14px; height:14px; border-radius:50%; background:${TYPES[key].col}; display:flex; align-items:center; justify-content:center; font-size:8px; color:#fff; border:1px solid rgba(255,255,255,0.4)"><i class="fa-solid ${TYPES[key].icon}"></i></div>`; 
+                } 
+            }); 
+        }
+
+        function handleArt(e) { 
+            const reader = new FileReader(); 
+            reader.onload = () => document.getElementById('artImg').src = reader.result; 
+            reader.readAsDataURL(e.target.files[0]); 
+        }
+
+        function exportFinal() { 
+            const btn = document.querySelector('.export-btn'); 
+            btn.innerText = "PROCESSING..."; 
+            btn.disabled = true; 
+            html2canvas(document.getElementById('cardWrapper'), { 
+                scale: document.getElementById('inRes').value, 
+                useCORS: true, 
+                backgroundColor: null, 
+            }).then(canvas => { 
+                const link = document.createElement('a'); 
+                link.download = `CARDXTION_${Date.now()}.png`; 
+                link.href = canvas.toDataURL("image/png"); 
+                link.click(); 
+                btn.innerText = "💾 GENERATE IMAGE"; 
+                btn.disabled = false; 
+            }); 
+        }
+
         runEngine();
     </script>
 </body>
