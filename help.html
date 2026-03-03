@@ -7,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     
     <style>
         /* --- RESET & LAYOUT ENGINE --- */
@@ -15,7 +14,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow-x: hidden; /* Mencegah geser kanan kiri */
+            overflow-x: hidden;
             font-family: 'Inter', sans-serif;
         }
 
@@ -23,69 +22,81 @@
             display: flex;
             flex-direction: column;
             background-color: #ffffff;
-            /* Background Pattern sesuai screenshot */
             background-image: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), 
                               url('https://img.freepik.com/free-vector/white-abstract-background_23-2148810353.jpg');
             background-size: cover;
             background-attachment: fixed;
         }
 
-        /* --- NAVBAR STICKY --- */
         .navbar {
             flex-shrink: 0;
             background: white !important;
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        /* --- MAIN CONTENT (The Fix) --- */
         main {
-            flex: 1 0 auto; /* Ini yang bikin footer terdorong ke bawah */
-            padding-top: 40px; /* Jarak pas dari navbar ke judul */
+            flex: 1 0 auto;
+            padding-top: 40px;
             padding-bottom: 40px;
         }
 
-        /* --- TYPOGRAPHY & HEADER --- */
-        .fw-800 { font-weight: 800; }
-        .text-primary-gradient {
-            background: linear-gradient(45deg, #5865F2, #854dee);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header-badge {
-            background-color: #eef0ff;
-            color: #5865F2;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 6px 16px;
-            border-radius: 50px;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        /* --- TABS NAVIGATION --- */
+        /* --- NAV PILLS & TABS --- */
         .nav-pills {
             background: white;
             padding: 6px;
             border-radius: 15px;
             display: inline-flex;
             border: 1px solid #eee;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
 
         .nav-pills .nav-link {
             color: #666 !important;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             padding: 10px 20px;
             border-radius: 12px;
             transition: 0.3s;
         }
 
+        /* Aktif Biru (Default) */
         .nav-pills .nav-link.active {
             background-color: #5865F2 !important;
             color: white !important;
             box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+        }
+
+        /* FIX: Aktif Merah Khusus Admin */
+        .nav-pills .nav-link.admin-tab.active {
+            background-color: #ed4245 !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(237, 66, 69, 0.3) !important;
+        }
+
+        /* --- WARNING BANNER (RESTRICTED) --- */
+        .warning-banner {
+            background: linear-gradient(135deg, #ed4245, #c0392b);
+            color: white;
+            border-radius: 15px;
+            padding: 15px 25px;
+            margin: 0 auto 30px auto;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 8px 15px rgba(237, 66, 69, 0.15);
+            max-width: 850px;
+        }
+        .warning-banner i { 
+            font-size: 1.8rem; 
+            margin-right: 20px; 
+            animation: pulse 2s infinite; 
+        }
+        .warning-banner h6 { font-weight: 800; margin-bottom: 2px; font-size: 0.95rem; text-transform: uppercase; }
+        .warning-banner p { font-size: 0.85rem; margin-bottom: 0; opacity: 0.9; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         /* --- COMMAND CARDS --- */
@@ -93,10 +104,12 @@
             background: white;
             border: 1px solid rgba(0,0,0,0.06);
             border-radius: 20px;
-            padding: 25px;
+            padding: 22px;
             height: 100%;
             transition: all 0.3s ease;
             text-align: left;
+            max-width: 380px;
+            margin: auto;
         }
 
         .command-card:hover {
@@ -104,215 +117,432 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.05);
             border-color: #5865F2;
         }
-        
-        .command-card .badge {
-            transition: 0.3s;
-            cursor: default;
+
+        .admin-card:hover {
+            border-color: #ed4245 !important;
         }
 
-        .command-card:hover .badge {
-            transform: scale(1.1);
-        }
-
+        /* --- BADGES --- */
         .cmd-label {
             color: #5865F2;
-            background: #f0f2ff;
+            background: rgba(88, 101, 242, 0.08); /* Efek transparan */
             font-family: 'monospace';
             font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 0.85rem;
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
             display: inline-block;
             margin-bottom: 12px;
+            cursor: pointer;
+            border: 1px solid rgba(88, 101, 242, 0.1);
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Efek pegas/bounce */
+            position: relative;
+            overflow: hidden;
         }
 
-        .card-title {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #2c2f33;
-        }
-
-        .card-text {
-            font-size: 0.88rem;
-            color: #72767d;
-            line-height: 1.5;
-        }
-
-        /* --- FOOTER (The Perfect Fit) --- */
-        footer {
-            flex-shrink: 0;
-            background-color: #111214 !important;
-            padding: 25px 0 !important;
+        .cmd-label:hover {
+            background: #5865F2;
             color: white;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
+            border-color: #5865F2;
         }
 
-        .footer-brand {
-            font-size: 1.2rem;
+        .cmd-label:active {
+            transform: translateY(0) scale(0.95);
+        }
+
+        /* Khusus Label Admin */
+        .label-admin {
+            color: #ed4245;
+            background: rgba(237, 66, 69, 0.08);
+            border-color: rgba(237, 66, 69, 0.1);
+        }
+        .label-admin:hover {
+            background: #ed4245;
+            color: white;
+            box-shadow: 0 5px 15px rgba(237, 66, 69, 0.4);
+            border-color: #ed4245;
+        }
+
+        .status-badge {
+            font-size: 0.65rem;
             font-weight: 800;
-            margin-bottom: 5px;
+            padding: 5px 12px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            animation: floating 3s ease-in-out infinite; /* Membuat badge melayang lembut */
+        }
+        .bg-new-ui, .bg-red { 
+            background: linear-gradient(135deg, #ed4245, #ff5f62) !important; 
+            color: white; 
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 15px rgba(237, 66, 69, 0.4);
+        }
+        .bg-ongoing { 
+            background: linear-gradient(135deg, #ffac33, #ffcc33) !important; 
+            color: #2c2f33; 
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 0 15px rgba(255, 172, 51, 0.4);
         }
 
-        .footer-copy {
-            font-size: 0.75rem;
-            opacity: 0.5;
+        .bg-new-items { 
+            background: linear-gradient(135deg, #2ecc71, #27ae60) !important; 
+            color: #ffffff !important; /* Teks putih agar lebih kontras dan bersih */
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
         }
+
+        .bg-new-games { 
+            background: linear-gradient(135deg, #a445ed, #6a11cb) !important; 
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(164, 69, 237, 0.5);
+            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .command-card:hover .bg-new-games {
+            background: linear-gradient(135deg, #6a11cb, #a445ed) !important;
+            box-shadow: 0 0 25px rgba(106, 17, 203, 0.8);
+            filter: brightness(1.2);
+            transform: scale(1.15) rotate(3deg);
+        }
+
+        .command-card:hover .bg-new-items {
+            background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+            box-shadow: 0 0 25px rgba(46, 204, 113, 0.8);
+            transform: scale(1.1) rotate(-3deg); /* Sedikit miring ke arah berbeda agar variatif */
+        }
+
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .command-card:hover .status-badge {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            filter: brightness(1.1);
+        }
+
+        .status-badge::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(45deg);
+            transition: 0.5s;
+            opacity: 0;
+        }
+
+        .status-badge:hover::after {
+            left: 100%;
+            opacity: 1;
+            transition: 0.5s;
+        }
+
+        /* --- TEXT & FOOTER --- */
+        .fw-800 { font-weight: 800; }
+        .text-primary-gradient {
+            background: linear-gradient(45deg, #5865F2, #854dee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-title { font-size: 1rem; font-weight: 700; color: #2c2f33; }
+        .card-text { font-size: 0.85rem; color: #72767d; }
+
+        footer { background-color: #111214 !important; padding: 25px 0 !important; color: white; }
     </style>
 </head>
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light py-3">
         <div class="container">
-            <a class="navbar-brand fw-800 fs-3" href="index.html">Cheyxtion`</a>
+            <a class="navbar-brand fw-800 fs-3" href="#">Cheyxtion`</a>
             <div class="ms-auto">
-                <a href="index.html" class="btn btn-outline-dark rounded-pill px-4 fw-bold btn-sm">Kembali ke Home</a>
+                <a href="/index.html" class="btn btn-outline-dark rounded-pill px-4 fw-bold btn-sm">Kembali ke Home</a>
             </div>
         </div>
     </nav>
 
 <main>
-        <div class="container text-center">
-            
-            <div class="header-badge">Cheyconomy Documentation v2.0</div>
-            <h1 class="fw-800 display-5 mb-2">Panduan & <span class="text-primary-gradient">Command List</span></h1>
-            <p class="text-muted mx-auto mb-4" style="max-width: 550px; font-size: 0.95rem;">
-                Sekarang dengan tampilan lebih fresh! Cek indikator <span class="badge rounded-pill bg-danger" style="font-size: 0.7rem;">NEW UI</span> untuk melihat sistem yang baru saja kami renovasi.
-            </p>
+    <div class="container text-center">
+        <div class="header-badge">Cheyconomy Documentation v3.0</div>
+        <h1 class="fw-800 display-5 mb-2">Pusat <span class="text-primary-gradient">Komando Shogun</span></h1>
+        <p class="text-muted mx-auto mb-4" style="max-width: 600px; font-size: 0.95rem;">
+            Eksplorasi seluruh fitur ekonomi server. Klik pada badge perintah untuk menyalin otomatis.
+        </p>
 
-            <div class="mb-5">
-                <ul class="nav nav-pills gap-1 justify-content-center" id="pills-tab" role="tablist">
-                    <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#economy"><i class="fas fa-wallet me-2"></i>Economy & Dasar</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#shop"><i class="fas fa-shopping-bag me-2"></i>Shop & Inventory</button>
-                    </li>
-                    <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#game"><i class="fas fa-gamepad me-2"></i>Game Corner</button>
-                    </li>
-                </ul>
+        <div class="mb-5">
+            <ul class="nav nav-pills gap-1 justify-content-center" id="pills-tab" role="tablist">
+                <li class="nav-item"><button class="nav-link economy-tab active" data-bs-toggle="pill" data-bs-target="#economy"><i class="fas fa-wallet me-2"></i>Ekonomi</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#bank"><i class="fas fa-bank me-2"></i>Perbankan</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#sinv"><i class="fa-solid fa-bag-shopping me-2"></i></i>Shop & Inventory</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#game"><i class="fa-solid fa-gamepad me-2"></i></i>Games</button></li>
+                <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#admin"><i class="fa-solid fa-shield-halved me-2"></i>Admin Area</button></li>
+            </ul>
+        </div>
+
+        <div class="tab-content text-start">
+
+
+
+            <!-- Ini bagian si ekonomi -->
+
+            <div class="tab-pane fade show active" id="economy">
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;" onclick="copyText('!me')">!profile / !p / !me</span>
+                                <span class="status-badge bg-new-ui">NEW UI</span>
+                            </div>
+                            
+                            <div class="card-title">Profil Pengguna</div>
+                            <p class="card-text">Identitas lengkap, saldo saat ini, dan pencapaian.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;" onclick="copyText('!wallet')">!wallet / !bal / !money</span>
+                                <span class="status-badge bg-new-ui">NEW UI</span>
+                            </div>
+                            
+                            <div class="card-title">Dompet & Saldo</div>
+                            <p class="card-text">Cek total saldo dan aset digital yang kamu simpan.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;" onclick="copyText('!wallet')">🗓️ Daily Button</span>
+                            <div class="card-title">Hadiah Harian</div>
+                            <p class="card-text">Ambil bonus saldo harianmu secara gratis setiap 24 jam.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;">🪓 Work Button</span>
+                            <div class="card-title">Cari Penghasilan</div>
+                            <p class="card-text">Kerjakan berbagai tugas seru untuk mendapatkan gaji tambahan.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;" onclick="copyText('!rich')">!top / !rich</span>
+                                <span class="status-badge bg-ongoing">ONGOING</span>
+                            </div>
+                            <div class="card-title">Nasabah Terkaya</div>
+                            <p class="card-text">Lihat daftar 10 pemain dengan saldo terbanyak.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="tab-content text-start">
-                
-                <div class="tab-pane fade show active" id="economy">
-                    <div class="row g-4">
-                        <div class="col-md-6 col-lg-4">
-                            <div class="command-card">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <span class="cmd-label">!me</span>
-                                    <span class="badge rounded-pill bg-danger" style="font-size: 0.65rem;">NEW UI</span>
-                                </div>
-                                <div class="card-title">Cek Identitas</div>
-                                <p class="card-text">Intip profil lengkapmu. Sekarang hadir dengan kartu identitas visual yang lebih estetik!</p>
+            <!-- BAGIAN PERBANKAN DISINI YA -->
+
+            <div class="tab-pane fade" id="bank">
+                <div class="row g-4 justify-content-center">
+
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;" onclick="copyText('!bank')">!bank</span>
+                                <span class="status-badge bg-new-ui">NEW UI</span>
                             </div>
+                            <div class="card-title">Portal Perbankan</div>
+                            <p class="card-text">Menu interaktif untuk mengelola aset bank.</p>
                         </div>
-                        <div class="col-md-6 col-lg-4">
-                            <div class="command-card">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <span class="cmd-label">!wallet</span>
-                                    <span class="badge rounded-pill bg-danger" style="font-size: 0.65rem;">NEW UI</span>
-                                </div>
-                                <div class="card-title">Cek Dompet</div>
-                                <p class="card-text">Tampilan saldo CT yang lebih rapi dan detail transaksimu kini makin jelas.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- BAGIAN SINV -->
+
+            <div class="tab-pane fade" id="sinv">
+                <div class="row g-4 justify-content-center">
+
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;" onclick="copyText('!shop')">!shop</span>
+                                <span class="status-badge bg-new-ui">NEW UI</span>
                             </div>
+                            <div class="card-title">Pasar Server</div>
+                            <p class="card-text">Beli berbagai item, Roles dan Badges Games terjual terpisah</p>
                         </div>
-                        <div class="col-md-6 col-lg-4">
-                            <div class="command-card">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <span class="cmd-label">!bank</span>
-                                    <span class="badge rounded-pill bg-danger" style="font-size: 0.65rem;">NEW UI</span>
-                                </div>
-                                <div class="card-title">Manajemen Bank</div>
-                                <p class="card-text">Deposit & Withdraw lebih aman dengan konfirmasi button di bawah pesan.</p>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;" onclick="copyText('!tas')">!tas / !inv / !inventory</span>
+                                <span class="status-badge bg-new-ui">NEW UI</span>
                             </div>
+                            <div class="card-title">Tas Penyimpanan</div>
+                            <p class="card-text">Kelola seluruh item dan koleksi barang yang kamu miliki.</p>
                         </div>
-                        <div class="col-md-6 col-lg-4">
-                            <div class="command-card">
-                                <span class="cmd-label">!daily</span>
-                                <div class="card-title">Claim Daily</div>
-                                <p class="card-text">Ambil jatah koin harianmu. Jangan sampai streak-mu putus!</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="game">
+                <div class="row g-4 justify-content-center">
+
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;" onclick="copyText('!cf')">!coinflip / !cf</span>
                             </div>
+                            <div class="card-title">Coinflip</div>
+                            <p class="card-text">Beli berbagai item, Roles dan Badges Games terjual terpisah</p>
                         </div>
-                        <div class="col-md-6 col-lg-4">
-                            <div class="command-card">
-                                <span class="cmd-label">!work</span>
-                                <div class="card-title">Kerja Rodi</div>
-                                <p class="card-text">Dapatkan koin CT dengan bekerja. Hati-hati kecapean!</p>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;" onclick="copyText('!adu')">!adu / !p2pcf</span>
+                                <span class="status-badge bg-new-ui">NEW UI</span>
                             </div>
+                            <div class="card-title">Coinflip Battle</div>
+                            <p class="card-text">Beli berbagai item, Roles dan Badges Games terjual terpisah</p>
                         </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;" onclick="copyText('!adu')">!slot</span>
+                                <span class="status-badge bg-new-items">UPDATE</span>
+                            </div>
+                            <div class="card-title">Roll Machine</div>
+                            <p class="card-text">Beli berbagai item, Roles dan Badges Games terjual terpisah</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="command-card">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label" style="font-family: 'Courier New', Courier, monospace;" onclick="copyText('!gosok')">!gosok</span>
+                                <span class="status-badge bg-new-games">NEW GAMES</span>
+                            </div>
+                            <div class="card-title">Bom Gosok</div>
+                            <p class="card-text">Beli berbagai item, Roles dan Badges Games terjual terpisah</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- BAGIAN ADMIN DISINI -->
+            
+            <div class="tab-pane fade" id="admin">
+                <div class="warning-banner">
+                    <i class="fas fa-triangle-exclamation"></i>
+                    <div>
+                        <h6>Akses Terbatas (Restricted)</h6>
+                        <p>Warning: Hanya <strong>Kanrisha</strong> dan <strong>Oyakata-sama</strong> yang bisa akses command ini.</p>
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="shop">
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="command-card border-primary">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <span class="cmd-label">!shop</span>
-                                    <span class="badge rounded-pill bg-danger" style="font-size: 0.65rem;">NEW UI</span>
-                                </div>
-                                <div class="card-title">Lihat Toko</div>
-                                <p class="card-text">Katalog item sekarang menggunakan menu dropdown yang lebih interaktif dan mudah dinavigasi.</p>
-                            </div>
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-4">
+                        <div class="command-card admin-card" style="border-left: 4px solid #ed4245;">
+                            <span class="cmd-label label-admin" onclick="copyText('!add')">!add / !take</span>
+                            <div class="card-title">Manipulasi Saldo</div>
+                            <p class="card-text">Format : <code>!add/!take &lt;type&gt;</code></p>
                         </div>
-                        <div class="col-md-6">
-                            <div class="command-card">
-                                <span class="cmd-label">!tas</span>
-                                <div class="card-title">Buka Inventory</div>
-                                <p class="card-text">Cek semua barang koleksimu. Sekarang item dikelompokkan berdasarkan tipe.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="command-card admin-card" style="border-left: 4px solid #ed4245;">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label label-admin" onclick="copyText('!giveitem')">!giveitem</span>
+                                <span class="status-badge bg-red">HIGHER</span>
                             </div>
+                            <div class="card-title">Distribusi Item</div>
+                            <p class="card-text">Kirim item inventory langsung ke tas pemain.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="command-card admin-card" style="border-left: 4px solid #ed4245;">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label label-admin" onclick="copyText('!additem')">!additem</span>
+                                <span class="status-badge bg-red">HIGHER</span>
+                            </div>
+                            <div class="card-title">Distribusi Item</div>
+                            <p class="card-text">Format : <code>!additem &lt;type&gt; &lt;emoji&gt; &lt;harga&gt; &lt;stock&gt; &lt;tag role (khusus type role)&gt; &lt;deskripsi&gt;</code></p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="command-card admin-card" style="border-left: 4px solid #ed4245;">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <span class="cmd-label label-admin" onclick="copyText('!delitem')">!delitem</span>
+                                <span class="status-badge bg-red">HIGHER</span>
+                            </div>
+                            <div class="card-title">Distribusi Item</div>
+                            <p class="card-text">Format : <code>!delitem &lt;nama item&gt;</code></p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="command-card admin-card" style="border-left: 4px solid #ed4245;">
+                            <span class="cmd-label label-admin" onclick="copyText('!botcash')">!botcash</span>
+                            <div class="card-title">Brankas Pusat</div>
+                            <p class="card-text">Cek isi total kas likuiditas pada sistem bot.</p>
                         </div>
                     </div>
                 </div>
-
-                <div class="tab-pane fade" id="game">
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div class="command-card shadow-sm border-primary" style="background: linear-gradient(to bottom right, #ffffff, #f5f6ff);">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <span class="cmd-label">!gosok</span>
-                                    <span class="badge rounded-pill bg-warning text-dark" style="font-size: 0.65rem;">NEW GAME</span>
-                                </div>
-                                <div class="card-title">Bom Gosok 💣</div>
-                                <p class="card-text">Pilih kotak dan gosok! Temukan hadiah tersembunyi, tapi awas jangan sampai kena bom!</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="command-card">
-                                <span class="cmd-label">!slot</span>
-                                <div class="card-title">Slot Machine</div>
-                                <p class="card-text">Putar mesin keberuntungan. 777 = Auto Sultan!</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="command-card">
-                                <span class="cmd-label">!kcf</span>
-                                <div class="card-title">Solo Coin Flip</div>
-                                <p class="card-text">Tebak gambar atau angka. Modal dikali dua kalau hoki!</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="command-card">
-                                <span class="cmd-label">!adu</span>
-                                <div class="card-title">Coinflip Battle</div>
-                                <p class="card-text">Duel 1vs1 lawan temanmu. Pemenang mengambil semua taruhan.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
     <footer class="text-center">
         <div class="container">
             <div class="footer-brand">Cheyxtion`</div>
-            <div class="footer-copy">Official Documentation &copy; 2026. Made with passion for the community.</div>
+            <div class="footer-copy">Official Documentation &copy; 2026. Kanxtion.</div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyText(text) {
+        navigator.clipboard.writeText(text);
+        
+        // Cari elemen yang diklik (opsional jika ingin visual feedback di badge)
+        const el = event.currentTarget;
+        const originalText = el.innerText;
+        
+        el.innerText = "Copied! ✓";
+        el.style.background = "#2ecc71"; // Warna hijau sukses
+        el.style.borderColor = "#2ecc71";
+        
+        setTimeout(() => {
+            el.innerText = originalText;
+            el.style.background = ""; // Kembalikan ke CSS semula
+            el.style.borderColor = "";
+        }, 1000);
+    }
+    </script>
 </body>
 </html>
